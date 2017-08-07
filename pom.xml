@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.plugin.plugin.version>3.5</maven.plugin.plugin.version>
+        <maven.plugin.api.version>3.5.0</maven.plugin.api.version>
+        <maven.plugin.annotations.version>3.5</maven.plugin.annotations.version>
+        <maven.compiler.plugin.version>3.6.2</maven.compiler.plugin.version>
+        <maven.settings.version>3.5.0</maven.settings.version>
+        <maven.settings.builder.version>3.5.0</maven.settings.builder.version>
+        <maven.project.version>2.2.1</maven.project.version>
+        <jgit.version>4.8.0.201706111038-r</jgit.version>
+        <project.scm.id>my-scm-server</project.scm.id>
+    </properties>
+
+    <groupId>co.enear</groupId>
+    <artifactId>changelog-maven-plugin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>maven-plugin</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>${maven.plugin.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>${maven.plugin.annotations.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-settings</artifactId>
+            <version>${maven.settings.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-settings-builder</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-project</artifactId>
+            <version>${maven.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>${jgit.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>${maven.plugin.plugin.version}</version>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <scm>
+	<connection>scm:git:https://github.com/enear/changelog-maven-plugin.git</connection>
+	<developerConnection>scm:git:https://github.com/enear/changelog-maven-plugin.git</developerConnection>
+    </scm>
+
+</project>
