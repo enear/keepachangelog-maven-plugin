@@ -1,10 +1,7 @@
-package org.enear.changelog;
+package org.enear.changelog.git;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A factory for constructing Git Server representations.

@@ -1,4 +1,6 @@
-package org.enear.changelog;
+package org.enear.changelog.git;
+
+import org.enear.changelog.utils.Range;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,4 +19,13 @@ public interface GitServer {
      * @throws MalformedURLException if the URL construction fails.
      */
     URL diff(String a, String b) throws MalformedURLException;
+
+    /**
+     * Returns an URL that compares a range of commits.
+     *
+     * @param range the range of commits.
+     * @return an URL that compares a range of commits.
+     * @throws MalformedURLException if the URL construction fails.
+     */
+    URL diff(Range<String> range) throws MalformedURLException;
 }

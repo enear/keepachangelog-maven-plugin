@@ -1,4 +1,4 @@
-package org.enear.changelog;
+package org.enear.changelog.git;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.LsRemoteCommand;

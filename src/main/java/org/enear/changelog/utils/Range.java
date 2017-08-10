@@ -1,4 +1,4 @@
-package org.enear.changelog;
+package org.enear.changelog.utils;
 
 import java.util.ArrayList;
 import java.util.Iterator;

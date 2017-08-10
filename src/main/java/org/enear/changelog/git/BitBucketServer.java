@@ -1,30 +1,39 @@
-package org.enear.changelog;
+package org.enear.changelog.git;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GitHubServer implements GitServer {
+/**
+ * A BitBucket server representation.
+ */
+public class BitBucketServer extends BaseGitServer implements GitServer {
 
-    private static final String USER_ID = "username";
+    private static final String PROJECT_ID = "project";
     private static final String REPO_ID = "repository";
     private static final String PATH_REGEX =
-            String.format("/(?<%s>[^/]*)/(?<%s>[^/]*)\\.git", USER_ID, REPO_ID);
+            String.format("/scm/(?<%s>[^/]+)/(?<%s>[^/]+)\\.git", PROJECT_ID, REPO_ID);
 
     public static final Pattern pathPattern = Pattern.compile(PATH_REGEX);
 
     private URL originUrl;
     private URL diffUrl;
-    private String username;
+    private String project;
     private String repository;
 
-    public GitHubServer(URL originUrl) throws MalformedURLException {
+    /**
+     * Creates a new BitBucketServer representation.
+     *
+     * @param originUrl the Git repository URL.
+     * @throws MalformedURLException
+     */
+    public BitBucketServer(URL originUrl) throws MalformedURLException {
         this.originUrl = originUrl;
         String path = this.originUrl.getPath();
         Matcher matcher = pathPattern.matcher(path);
         if (matcher.matches()) {
-            this.username = matcher.group(USER_ID);
+            this.project = matcher.group(PROJECT_ID);
             this.repository = matcher.group(REPO_ID);
         } else {
             throw new MalformedURLException("Unknown path format.");
@@ -39,8 +48,8 @@ public class GitHubServer implements GitServer {
         return originUrl.getHost();
     }
 
-    private String getUsername() {
-        return username;
+    private String getProject() {
+        return project;
     }
 
     private String getRepository() {
@@ -51,10 +60,10 @@ public class GitHubServer implements GitServer {
         if (diffUrl == null) {
             String protocol = getProtocol();
             String host = getHost();
-            String username = getUsername();
+            String project = getProject();
             String repo = getRepository();
-            String spec = String.format("%s://%s/%s/%s/compare",
-                    protocol, host, username, repo);
+            String spec = String.format("%s://%s/projects/%s/repos/%s/branches/compare",
+                    protocol, host, project, repo);
             this.diffUrl = new URL(spec);
         }
     }
@@ -62,7 +71,7 @@ public class GitHubServer implements GitServer {
     @Override
     public URL diff(String a, String b) throws MalformedURLException {
         initDiffUrl();
-        String spec = String.format("%s/%s..%s", diffUrl, a, b);
+        String spec = String.format("%s/%s%%0D%s", diffUrl, a, b);
         return new URL(spec);
     }
 }

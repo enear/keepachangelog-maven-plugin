@@ -1,4 +1,4 @@
-package org.enear.changelog;
+package org.enear.changelog.git;
 
 /**
  * If the Git Server is not supported.
@@ -11,5 +11,5 @@ public class UnknownGitServerException extends RuntimeException {
     public UnknownGitServerException() {
         super("Unknown Git Server.");
     }
-    
+
 }

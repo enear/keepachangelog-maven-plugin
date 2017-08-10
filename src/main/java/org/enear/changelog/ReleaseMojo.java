@@ -4,6 +4,11 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.enear.changelog.git.GitServer;
+import org.enear.changelog.git.GitServerFactory;
+import org.enear.changelog.git.GitUtils;
+import org.enear.changelog.markdown.RefLink;
+import org.enear.changelog.utils.Range;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -58,6 +63,14 @@ public class ReleaseMojo extends InitMojo {
         bw.newLine();
     }
 
+    private void writeDiffLink(GitServer gitServer, Range<String> tagRange, BufferedWriter bw) throws IOException {
+        String ref = tagRange.getEnd();
+        URL link = gitServer.diff(tagRange);
+        RefLink diffLink = new RefLink(ref, link);
+        bw.write(diffLink.toString());
+        bw.newLine();
+    }
+
     /**
      * Writes links to version differences based on tag ranges and a git server.
      *
@@ -69,11 +82,7 @@ public class ReleaseMojo extends InitMojo {
     private void writeDiffLinks(List<Range<String>> tagRanges, GitServer gitServer, BufferedWriter bw) throws IOException {
         if (!diffsWritten) {
             for (Range<String> tagRange : tagRanges) {
-                String begin = tagRange.getBegin();
-                String end = tagRange.getEnd();
-                URL diffUrl = gitServer.diff(begin, end);
-                bw.write(String.format("[%s]: %s", end, diffUrl));
-                bw.newLine();
+                writeDiffLink(gitServer, tagRange, bw);
             }
             diffsWritten = true;
         }
