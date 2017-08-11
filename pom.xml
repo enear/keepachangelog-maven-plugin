@@ -77,8 +77,8 @@
     </build>
 
     <scm>
-	<connection>scm:git:https://github.com/enear/changelog-maven-plugin.git</connection>
-	<developerConnection>scm:git:https://github.com/enear/changelog-maven-plugin.git</developerConnection>
+        <connection>scm:git:https://github.com/enear/changelog-maven-plugin.git</connection>
+        <developerConnection>scm:git:https://github.com/enear/changelog-maven-plugin.git</developerConnection>
     </scm>
 
 </project>

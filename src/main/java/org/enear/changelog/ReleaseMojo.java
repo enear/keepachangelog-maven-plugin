@@ -7,7 +7,8 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.enear.changelog.git.GitServer;
 import org.enear.changelog.git.GitServerFactory;
 import org.enear.changelog.git.GitUtils;
-import org.enear.changelog.markdown.RefLink;
+import org.enear.changelog.markdown.generic.RefLink;
+import org.enear.changelog.markdown.specific.VersionHeading;
 import org.enear.changelog.utils.Range;
 
 import java.io.BufferedReader;
@@ -20,6 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -40,11 +42,6 @@ public class ReleaseMojo extends InitMojo {
     private static final String UNRELEASED_VERSION = "Unreleased";
     private static final String CHANGELOG_TMP_PREFIX = "changelog";
     private static final String CHANGELOG_TMP_SUFFIX = ".tmp";
-    private static final String UNRELEASED_REGEX = "^## \\[Unreleased\\]$";
-    private static final String DIFF_URL_REGEX = "^\\[.*\\]: .*$";
-
-    private static final Pattern unreleasedPattern = Pattern.compile(UNRELEASED_REGEX);
-    private static final Pattern diffUrlPattern = Pattern.compile(DIFF_URL_REGEX);
 
     private boolean diffsWritten = false;
 
@@ -56,10 +53,13 @@ public class ReleaseMojo extends InitMojo {
      * @throws IOException if an I/O error occurs.
      */
     private void writeNewVersion(String version, BufferedWriter bw) throws IOException {
-        bw.write(String.format("## [%s]", UNRELEASED_VERSION));
+        VersionHeading currVersion = new VersionHeading(version, LocalDate.now());
+        VersionHeading unreleasedVersion = VersionHeading.unreleased();
+
+        bw.write(unreleasedVersion.toString());
         bw.newLine();
         bw.newLine();
-        bw.write(String.format("## [%s] - %s", version, LocalDate.now()));
+        bw.write(currVersion.toString());
         bw.newLine();
     }
 
@@ -101,11 +101,27 @@ public class ReleaseMojo extends InitMojo {
     private void writeNewLine(String version, List<Range<String>> tagRanges, GitServer gitServer,
                               BufferedWriter bw, String line) throws MojoFailureException {
         try {
-            if (unreleasedPattern.matcher(line).matches()) {
-                writeNewVersion(version, bw);
-            } else if (diffUrlPattern.matcher(line).matches()) {
-                writeDiffLinks(tagRanges, gitServer, bw);
-            } else {
+            boolean parsedLine = false;
+            if (!parsedLine) {
+                Optional<VersionHeading> opt = VersionHeading.parse(line);
+                if (opt.isPresent()) {
+                    VersionHeading versionHeading = opt.get();
+                    if (versionHeading.isUnreleased()) {
+                        writeNewVersion(version, bw);
+                        parsedLine = true;
+                    }
+                }
+            }
+
+            if (!parsedLine) {
+                Optional<RefLink> opt = RefLink.parse(line);
+                if (opt.isPresent()) {
+                    writeDiffLinks(tagRanges, gitServer, bw);
+                    parsedLine = true;
+                }
+            }
+
+            if (!parsedLine) {
                 bw.write(line);
                 bw.newLine();
             }
