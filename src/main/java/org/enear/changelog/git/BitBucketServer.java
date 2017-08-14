@@ -26,9 +26,9 @@ public class BitBucketServer extends BaseGitServer implements GitServer {
      * Creates a new BitBucketServer representation.
      *
      * @param originUrl the Git repository URL.
-     * @throws MalformedURLException
+     * @throws GitServerException if the given URL is not in the BitBucket format
      */
-    public BitBucketServer(URL originUrl) throws MalformedURLException {
+    public BitBucketServer(URL originUrl) {
         this.originUrl = originUrl;
         String path = this.originUrl.getPath();
         Matcher matcher = pathPattern.matcher(path);
@@ -36,7 +36,7 @@ public class BitBucketServer extends BaseGitServer implements GitServer {
             this.project = matcher.group(PROJECT_ID);
             this.repository = matcher.group(REPO_ID);
         } else {
-            throw new MalformedURLException("Unknown path format.");
+            throw new GitServerException("Unknown path format.");
         }
     }
 
@@ -69,9 +69,13 @@ public class BitBucketServer extends BaseGitServer implements GitServer {
     }
 
     @Override
-    public URL diff(String a, String b) throws MalformedURLException {
-        initDiffUrl();
-        String spec = String.format("%s/%s%%0D%s", diffUrl, a, b);
-        return new URL(spec);
+    public URL diff(String a, String b) {
+        try {
+            initDiffUrl();
+            String spec = String.format("%s/%s%%0D%s", diffUrl, a, b);
+            return new URL(spec);
+        } catch (MalformedURLException e) {
+            throw new GitServerException("Failed to create a diff link.", e);
+        }
     }
 }

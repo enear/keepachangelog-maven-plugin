@@ -1,5 +1,7 @@
 package org.enear.changelog.markdown.generic;
 
+import org.enear.changelog.markdown.ParseException;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
@@ -17,19 +19,23 @@ public class RefLink {
     private String ref;
     private URL link;
 
-    public RefLink(String ref, URL link) throws MalformedURLException {
+    public RefLink(String ref, URL link) {
         this.ref = ref;
         this.link = link;
     }
 
-    public static Optional<RefLink> parse(String line) throws MalformedURLException {
-        Matcher matcher = pattern.matcher(line);
-        if (matcher.matches()) {
-            String ref = matcher.group(REF_ID);
-            URL link = new URL(matcher.group(LINK_ID));
-            return Optional.of(new RefLink(ref, link));
-        } else {
-            return Optional.empty();
+    public static Optional<RefLink> parse(String line) {
+        try {
+            Matcher matcher = pattern.matcher(line);
+            if (matcher.matches()) {
+                String ref = matcher.group(REF_ID);
+                URL link = new URL(matcher.group(LINK_ID));
+                return Optional.of(new RefLink(ref, link));
+            } else {
+                return Optional.empty();
+            }
+        } catch (Exception e) {
+            throw new ParseException("Failed to parse reference link.", e);
         }
     }
 

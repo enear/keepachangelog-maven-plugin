@@ -8,7 +8,7 @@ import java.net.URL;
 public abstract class BaseGitServer implements GitServer {
 
     @Override
-    public URL diff(Range<String> range) throws MalformedURLException {
+    public URL diff(Range<String> range) {
         String begin = range.getBegin();
         String end = range.getEnd();
         return diff(begin, end);

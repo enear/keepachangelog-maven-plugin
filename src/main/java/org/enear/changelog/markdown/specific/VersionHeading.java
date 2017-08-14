@@ -10,8 +10,9 @@ import java.util.regex.Pattern;
 
 public class VersionHeading {
 
+    public static final String UNRELEASED_VERSION = "Unreleased";
+
     private static final int HEADING_LEVEL = 2;
-    private static final String UNRELEASED_VERSION = "Unreleased";
     private static final String VERSION_ID = "version";
     private static final String DATE_ID = "date";
 

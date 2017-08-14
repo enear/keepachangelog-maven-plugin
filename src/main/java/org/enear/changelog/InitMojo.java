@@ -37,6 +37,9 @@ public class InitMojo extends AbstractMojo {
     @Parameter(defaultValue = "${settings}", readonly = true)
     protected Settings settings;
 
+    @Parameter(defaultValue = "v${version}", readonly = true)
+    protected String tagFormat;
+
     @Component(role = SettingsDecrypter.class)
     protected SettingsDecrypter settingsDecrypter;
 

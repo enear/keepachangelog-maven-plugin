@@ -3,11 +3,11 @@ package org.enear.changelog;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.enear.changelog.git.GitServer;
+import org.enear.changelog.git.GitServerException;
 import org.enear.changelog.git.GitServerFactory;
-import org.enear.changelog.git.GitUtils;
 import org.enear.changelog.markdown.generic.RefLink;
+import org.enear.changelog.markdown.specific.DiffRefLink;
 import org.enear.changelog.markdown.specific.VersionHeading;
 import org.enear.changelog.utils.Range;
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -39,35 +39,32 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 @Mojo(name = "release")
 public class ReleaseMojo extends InitMojo {
 
-    private static final String UNRELEASED_VERSION = "Unreleased";
     private static final String CHANGELOG_TMP_PREFIX = "changelog";
     private static final String CHANGELOG_TMP_SUFFIX = ".tmp";
 
-    private boolean diffsWritten = false;
+    private List<String> parsedVersions = new ArrayList<>();
 
     /**
-     * Replaces the unreleased version with the current application version and add a new unreleased version.
+     * Replaces the unreleased currVersion with the current application currVersion and add a new unreleased currVersion.
      *
-     * @param version the current version of the application.
-     * @param bw      the writer for the updated changelog.
+     * @param currVersion the current currVersion of the application.
+     * @param bw          the writer for the updated changelog.
      * @throws IOException if an I/O error occurs.
      */
-    private void writeNewVersion(String version, BufferedWriter bw) throws IOException {
-        VersionHeading currVersion = new VersionHeading(version, LocalDate.now());
-        VersionHeading unreleasedVersion = VersionHeading.unreleased();
+    private void writeNewVersion(String currVersion, BufferedWriter bw) throws IOException {
+        VersionHeading currVerHeading = new VersionHeading(currVersion, LocalDate.now());
+        VersionHeading unrelVerHeading = VersionHeading.unreleased();
 
-        bw.write(unreleasedVersion.toString());
+        bw.write(unrelVerHeading.toString());
         bw.newLine();
         bw.newLine();
-        bw.write(currVersion.toString());
+        bw.write(currVerHeading.toString());
         bw.newLine();
     }
 
     private void writeDiffLink(GitServer gitServer, Range<String> tagRange, BufferedWriter bw) throws IOException {
-        String ref = tagRange.getEnd();
-        URL link = gitServer.diff(tagRange);
-        RefLink diffLink = new RefLink(ref, link);
-        bw.write(diffLink.toString());
+        DiffRefLink diffRefLink = new DiffRefLink(tagFormat, gitServer, tagRange);
+        bw.write(diffRefLink.toString());
         bw.newLine();
     }
 
@@ -80,26 +77,20 @@ public class ReleaseMojo extends InitMojo {
      * @throws IOException if an I/O error occurs.
      */
     private void writeDiffLinks(List<Range<String>> tagRanges, GitServer gitServer, BufferedWriter bw) throws IOException {
-        if (!diffsWritten) {
-            for (Range<String> tagRange : tagRanges) {
-                writeDiffLink(gitServer, tagRange, bw);
-            }
-            diffsWritten = true;
+        for (Range<String> tagRange : tagRanges) {
+            writeDiffLink(gitServer, tagRange, bw);
         }
     }
 
     /**
      * Writes an updated changelog line.
      *
-     * @param version   the current version of the application.
-     * @param tagRanges the tag ranges to write the Git version differences.
-     * @param gitServer the git server where the URL will be used to write the Git version differences.
-     * @param bw        the writer for the updated changelog.
-     * @param line      the line of the original changelog file.
+     * @param currVersion the current version of the application.
+     * @param bw          the writer for the updated changelog.
+     * @param line        the line of the original changelog file.
      * @throws MojoFailureException if an error occur.
      */
-    private void writeNewLine(String version, List<Range<String>> tagRanges, GitServer gitServer,
-                              BufferedWriter bw, String line) throws MojoFailureException {
+    private void writeNewLine(String currVersion, BufferedWriter bw, String line) throws MojoFailureException {
         try {
             boolean parsedLine = false;
             if (!parsedLine) {
@@ -107,8 +98,12 @@ public class ReleaseMojo extends InitMojo {
                 if (opt.isPresent()) {
                     VersionHeading versionHeading = opt.get();
                     if (versionHeading.isUnreleased()) {
-                        writeNewVersion(version, bw);
+                        writeNewVersion(currVersion, bw);
+                        parsedVersions.add(VersionHeading.UNRELEASED_VERSION);
+                        parsedVersions.add(currVersion);
                         parsedLine = true;
+                    } else {
+                        parsedVersions.add(versionHeading.getVersion());
                     }
                 }
             }
@@ -116,7 +111,6 @@ public class ReleaseMojo extends InitMojo {
             if (!parsedLine) {
                 Optional<RefLink> opt = RefLink.parse(line);
                 if (opt.isPresent()) {
-                    writeDiffLinks(tagRanges, gitServer, bw);
                     parsedLine = true;
                 }
             }
@@ -133,27 +127,23 @@ public class ReleaseMojo extends InitMojo {
     /**
      * Updates a changelog.
      *
-     * @param version   the current version of the application.
-     * @param tagRanges the tag ranges in reverse order.
-     * @param gitServer the Git server.
-     * @param path      the path of the changelog to update.
+     * @param currVersion the current currVersion of the application.
+     * @param gitServer   the Git server.
+     * @param path        the path of the changelog to update.
      * @throws MojoFailureException if an error occur.
      */
-    private void writeNewChangelog(String version, List<Range<String>> tagRanges, GitServer gitServer,
+    private void writeNewChangelog(String currVersion, GitServer gitServer,
                                    Path path) throws MojoFailureException {
         Path temp = createTempChangelog();
         try (BufferedReader pathReader = Files.newBufferedReader(path);
              BufferedWriter tempWriter = Files.newBufferedWriter(temp)) {
             String line;
             while ((line = pathReader.readLine()) != null) {
-                writeNewLine(version, tagRanges, gitServer, tempWriter, line);
+                writeNewLine(currVersion, tempWriter, line);
             }
 
-            // If the changelog does not contain any diff links yet
-            if (!diffsWritten) {
-                writeDiffLinks(tagRanges, gitServer, tempWriter);
-                diffsWritten = true;
-            }
+            List<Range<String>> tagRanges = getTagRanges();
+            writeDiffLinks(tagRanges, gitServer, tempWriter);
         } catch (IOException e) {
             throw new MojoFailureException("Failed write the updated changelog.", e);
         }
@@ -184,14 +174,10 @@ public class ReleaseMojo extends InitMojo {
      *
      * @param url the origin URL
      * @return the origin repository.
-     * @throws MojoFailureException if an error occurs while getting the origin repository.
+     * @throws GitServerException if an error occurs while getting the origin repository.
      */
-    private GitServer getOriginRepo(URL url) throws MojoFailureException {
-        try {
-            return GitServerFactory.from(url);
-        } catch (IOException e) {
-            throw new MojoFailureException("Failed to get origin repository.", e);
-        }
+    private GitServer getOriginRepo(URL url) {
+        return GitServerFactory.from(url);
     }
 
     /**
@@ -213,28 +199,21 @@ public class ReleaseMojo extends InitMojo {
      * }
      * </pre>
      *
-     * @param repoUrl  the repository URL.
-     * @param username the username for the repository URL.
-     * @param password the password for the repository URL.
      * @return the ranges of tags in reverse order.
      * @throws MojoFailureException if any error occurs.
      */
-    private List<Range<String>> getReversedTagRanges(URL repoUrl, String username, String password)
+    private List<Range<String>> getTagRanges()
             throws MojoFailureException {
-        try {
-            List<String> begins = GitUtils.getTags(repoUrl, username, password);
-            if (!begins.isEmpty()) {
-                List<String> ends = new ArrayList<>(begins);
-                ends.remove(0);
-                ends.add(UNRELEASED_VERSION);
-                List<Range<String>> ranges = Range.zip(begins, ends);
-                Collections.reverse(ranges);
-                return ranges;
-            } else {
-                return Collections.EMPTY_LIST;
-            }
-        } catch (GitAPIException e) {
-            throw new MojoFailureException("Failed to get tags.", e);
+        List<String> begins = new ArrayList<>(parsedVersions);
+        if (!begins.isEmpty()) {
+            List<String> ends = new ArrayList<>(begins);
+            begins.remove(0);
+            ends.remove(ends.size() - 1);
+            List<Range<String>> ranges = Range.zip(begins, ends);
+
+            return ranges;
+        } else {
+            return Collections.EMPTY_LIST;
         }
     }
 
@@ -259,9 +238,8 @@ public class ReleaseMojo extends InitMojo {
 
         Path path = getChangelogPath();
         String version = getAppVersion();
-        List<Range<String>> tagRanges = getReversedTagRanges(connectionUrl, username, password);
         GitServer origin = getOriginRepo(connectionUrl);
-        writeNewChangelog(version, tagRanges, origin, path);
+        writeNewChangelog(version, origin, path);
     }
 
     @Override

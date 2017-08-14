@@ -19,7 +19,7 @@ public class GitHubServer extends BaseGitServer implements GitServer {
     private String username;
     private String repository;
 
-    public GitHubServer(URL originUrl) throws MalformedURLException {
+    public GitHubServer(URL originUrl) {
         this.originUrl = originUrl;
         String path = this.originUrl.getPath();
         Matcher matcher = pathPattern.matcher(path);
@@ -27,7 +27,7 @@ public class GitHubServer extends BaseGitServer implements GitServer {
             this.username = matcher.group(USER_ID);
             this.repository = matcher.group(REPO_ID);
         } else {
-            throw new MalformedURLException("Unknown path format.");
+            throw new GitServerException("Unknown path format.");
         }
     }
 
@@ -60,9 +60,13 @@ public class GitHubServer extends BaseGitServer implements GitServer {
     }
 
     @Override
-    public URL diff(String a, String b) throws MalformedURLException {
-        initDiffUrl();
-        String spec = String.format("%s/%s..%s", diffUrl, a, b);
-        return new URL(spec);
+    public URL diff(String a, String b) {
+        try {
+            initDiffUrl();
+            String spec = String.format("%s/%s..%s", diffUrl, a, b);
+            return new URL(spec);
+        } catch (MalformedURLException e) {
+            throw new GitServerException("Failed to create a diff link.", e);
+        }
     }
 }

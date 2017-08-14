@@ -16,16 +16,16 @@ public class GitServerFactory {
      *
      * @param originUrl a repository URL.
      * @return a Git Server.
-     * @throws MalformedURLException if the repository URL is malformed.
+     * @throws GitServerException if the repository URL is malformed.
      */
-    public static GitServer from(URL originUrl) throws MalformedURLException {
+    public static GitServer from(URL originUrl) {
         String host = originUrl.getHost();
         if (host.startsWith(BITBUCKET_HOST_PREFIX)) {
             return new BitBucketServer(originUrl);
         } else if (host.startsWith(GITHUB_HOST_PREFIX)) {
             return new GitHubServer(originUrl);
         } else {
-            throw new UnknownGitServerException();
+            throw new GitServerException("Unknown Git server.");
         }
     }
 

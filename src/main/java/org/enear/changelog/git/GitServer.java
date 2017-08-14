@@ -16,16 +16,16 @@ public interface GitServer {
      * @param a the first commit.
      * @param b the second commit.
      * @return an URL that compares two commits.
-     * @throws MalformedURLException if the URL construction fails.
+     * @throws GitServerException if the URL construction fails.
      */
-    URL diff(String a, String b) throws MalformedURLException;
+    URL diff(String a, String b);
 
     /**
      * Returns an URL that compares a range of commits.
      *
      * @param range the range of commits.
      * @return an URL that compares a range of commits.
-     * @throws MalformedURLException if the URL construction fails.
+     * @throws GitServerException if the URL construction fails.
      */
-    URL diff(Range<String> range) throws MalformedURLException;
+    URL diff(Range<String> range);
 }
