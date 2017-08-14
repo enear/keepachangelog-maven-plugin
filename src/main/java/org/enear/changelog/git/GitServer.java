@@ -2,7 +2,6 @@ package org.enear.changelog.git;
 
 import org.enear.changelog.utils.Range;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**

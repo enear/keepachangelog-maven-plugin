@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -55,16 +54,24 @@ public class ReleaseMojo extends InitMojo {
         VersionHeading currVerHeading = new VersionHeading(currVersion, LocalDate.now());
         VersionHeading unrelVerHeading = VersionHeading.unreleased();
 
-        bw.write(unrelVerHeading.toString());
+        bw.write(unrelVerHeading.toMarkdown());
         bw.newLine();
         bw.newLine();
-        bw.write(currVerHeading.toString());
+        bw.write(currVerHeading.toMarkdown());
         bw.newLine();
     }
 
+    /**
+     * Writes a list of version comparison links.
+     *
+     * @param gitServer the git server
+     * @param tagRange  the tag ranges.
+     * @param bw        the buffered writer.
+     * @throws IOException if an error occurs while writing.
+     */
     private void writeDiffLink(GitServer gitServer, Range<String> tagRange, BufferedWriter bw) throws IOException {
         DiffRefLink diffRefLink = new DiffRefLink(tagFormat, gitServer, tagRange);
-        bw.write(diffRefLink.toString());
+        bw.write(diffRefLink.toMarkdown());
         bw.newLine();
     }
 
@@ -99,7 +106,7 @@ public class ReleaseMojo extends InitMojo {
                     VersionHeading versionHeading = opt.get();
                     if (versionHeading.isUnreleased()) {
                         writeNewVersion(currVersion, bw);
-                        parsedVersions.add(VersionHeading.UNRELEASED_VERSION);
+                        parsedVersions.add(UNRELEASED_VERSION);
                         parsedVersions.add(currVersion);
                         parsedLine = true;
                     } else {
@@ -109,7 +116,7 @@ public class ReleaseMojo extends InitMojo {
             }
 
             if (!parsedLine) {
-                Optional<RefLink> opt = RefLink.parse(line);
+                Optional<RefLink> opt = RefLink.fromMarkdown(line);
                 if (opt.isPresent()) {
                     parsedLine = true;
                 }

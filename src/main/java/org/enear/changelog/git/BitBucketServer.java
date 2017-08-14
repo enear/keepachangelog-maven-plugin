@@ -26,7 +26,7 @@ public class BitBucketServer extends BaseGitServer implements GitServer {
      * Creates a new BitBucketServer representation.
      *
      * @param originUrl the Git repository URL.
-     * @throws GitServerException if the given URL is not in the BitBucket format
+     * @throws GitServerException if the given URL is not in the BitBucket format.
      */
     public BitBucketServer(URL originUrl) {
         this.originUrl = originUrl;

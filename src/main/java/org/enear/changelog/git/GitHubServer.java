@@ -19,6 +19,12 @@ public class GitHubServer extends BaseGitServer implements GitServer {
     private String username;
     private String repository;
 
+    /**
+     * Creates a new GitHub representation.
+     *
+     * @param originUrl the Git repository URL.
+     * @throws GitServerException if the given URL is not in the GitHub format.
+     */
     public GitHubServer(URL originUrl) {
         this.originUrl = originUrl;
         String path = this.originUrl.getPath();
