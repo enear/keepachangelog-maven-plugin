@@ -7,13 +7,16 @@ import org.enear.changelog.git.GitServer;
 import org.enear.changelog.git.GitServerException;
 import org.enear.changelog.git.GitServerFactory;
 import org.enear.changelog.markdown.generic.RefLink;
+import org.enear.changelog.markdown.specific.ChangelogReader;
 import org.enear.changelog.markdown.specific.DiffRefLink;
+import org.enear.changelog.markdown.specific.ReaderException;
 import org.enear.changelog.markdown.specific.VersionHeading;
 import org.enear.changelog.utils.Range;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -78,56 +81,14 @@ public class ReleaseMojo extends InitMojo {
     /**
      * Writes links to version differences based on tag ranges and a git server.
      *
-     * @param tagRanges the tag ranges to write the Git version differences.
      * @param gitServer the git server where the URL will be used to write the Git version differences.
      * @param bw        the writer for the updated changelog.
      * @throws IOException if an I/O error occurs.
      */
-    private void writeDiffLinks(List<Range<String>> tagRanges, GitServer gitServer, BufferedWriter bw) throws IOException {
+    private void writeDiffLinks(GitServer gitServer, BufferedWriter bw) throws IOException {
+        List<Range<String>> tagRanges = getTagRanges();
         for (Range<String> tagRange : tagRanges) {
             writeDiffLink(gitServer, tagRange, bw);
-        }
-    }
-
-    /**
-     * Writes an updated changelog line.
-     *
-     * @param currVersion the current version of the application.
-     * @param bw          the writer for the updated changelog.
-     * @param line        the line of the original changelog file.
-     * @throws MojoFailureException if an error occur.
-     */
-    private void writeNewLine(String currVersion, BufferedWriter bw, String line) throws MojoFailureException {
-        try {
-            boolean parsedLine = false;
-            if (!parsedLine) {
-                Optional<VersionHeading> opt = VersionHeading.parse(line);
-                if (opt.isPresent()) {
-                    VersionHeading versionHeading = opt.get();
-                    if (versionHeading.isUnreleased()) {
-                        writeNewVersion(currVersion, bw);
-                        parsedVersions.add(UNRELEASED_VERSION);
-                        parsedVersions.add(currVersion);
-                        parsedLine = true;
-                    } else {
-                        parsedVersions.add(versionHeading.getVersion());
-                    }
-                }
-            }
-
-            if (!parsedLine) {
-                Optional<RefLink> opt = RefLink.fromMarkdown(line);
-                if (opt.isPresent()) {
-                    parsedLine = true;
-                }
-            }
-
-            if (!parsedLine) {
-                bw.write(line);
-                bw.newLine();
-            }
-        } catch (IOException e) {
-            throw new MojoFailureException("Failed to write a new line to the updated changelog.", e);
         }
     }
 
@@ -142,17 +103,44 @@ public class ReleaseMojo extends InitMojo {
     private void writeNewChangelog(String currVersion, GitServer gitServer,
                                    Path path) throws MojoFailureException {
         Path temp = createTempChangelog();
-        try (BufferedReader pathReader = Files.newBufferedReader(path);
-             BufferedWriter tempWriter = Files.newBufferedWriter(temp)) {
-            String line;
-            while ((line = pathReader.readLine()) != null) {
-                writeNewLine(currVersion, tempWriter, line);
-            }
+        try (BufferedWriter bw = Files.newBufferedWriter(temp)) {
+            ChangelogReader reader = new ChangelogReader() {
+                @Override
+                protected void onVersionHeading(VersionHeading versionHeading) {
+                    try {
+                        if (versionHeading.isUnreleased()) {
+                            writeNewVersion(currVersion, bw);
+                            parsedVersions.add(UNRELEASED_VERSION);
+                            parsedVersions.add(currVersion);
+                        } else {
+                            bw.write(versionHeading.toMarkdown());
+                            bw.newLine();
+                            String version = versionHeading.getVersion();
+                            parsedVersions.add(version);
+                        }
+                    } catch (Exception e) {
+                        throw new ReaderException("Failed to read version heading", e);
+                    }
+                }
 
-            List<Range<String>> tagRanges = getTagRanges();
-            writeDiffLinks(tagRanges, gitServer, tempWriter);
-        } catch (IOException e) {
-            throw new MojoFailureException("Failed write the updated changelog.", e);
+                @Override
+                protected void onRefLink(RefLink refLink) {
+                }
+
+                @Override
+                protected void onOther(String line) {
+                    try {
+                        bw.write(line);
+                        bw.newLine();
+                    } catch (Exception e) {
+                        throw new ReaderException("Failed to read line", e);
+                    }
+                }
+            };
+            reader.read(path);
+            writeDiffLinks(gitServer, bw);
+        } catch (Exception e) {
+            throw new MojoFailureException("Failed to replace the original changelog.", e);
         }
 
         try {
@@ -207,10 +195,8 @@ public class ReleaseMojo extends InitMojo {
      * </pre>
      *
      * @return the ranges of tags in reverse order.
-     * @throws MojoFailureException if any error occurs.
      */
-    private List<Range<String>> getTagRanges()
-            throws MojoFailureException {
+    private List<Range<String>> getTagRanges() {
         List<String> begins = new ArrayList<>(parsedVersions);
         if (!begins.isEmpty()) {
             List<String> ends = new ArrayList<>(begins);
