@@ -9,7 +9,7 @@ task: release.
 The release task can be executed as follows:
 
 ```
-mvn changelog:release
+mvn keepachangelog:release
 ```
 
 Releasing will perform the following operations:

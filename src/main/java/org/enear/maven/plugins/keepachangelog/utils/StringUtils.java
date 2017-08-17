@@ -1,4 +1,4 @@
-package org.enear.changelog.utils;
+package org.enear.maven.plugins.keepachangelog.utils;
 
 import java.util.Arrays;
 

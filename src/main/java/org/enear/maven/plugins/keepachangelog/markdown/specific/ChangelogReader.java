@@ -1,6 +1,6 @@
-package org.enear.changelog.markdown.specific;
+package org.enear.maven.plugins.keepachangelog.markdown.specific;
 
-import org.enear.changelog.markdown.generic.RefLink;
+import org.enear.maven.plugins.keepachangelog.markdown.generic.RefLink;
 
 import java.io.IOException;
 import java.nio.file.Files;

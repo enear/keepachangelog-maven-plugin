@@ -1,22 +1,20 @@
-package org.enear.changelog;
+package org.enear.maven.plugins.keepachangelog;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.enear.changelog.git.GitServer;
-import org.enear.changelog.git.GitServerException;
-import org.enear.changelog.git.GitServerFactory;
-import org.enear.changelog.markdown.generic.RefLink;
-import org.enear.changelog.markdown.specific.ChangelogReader;
-import org.enear.changelog.markdown.specific.DiffRefLink;
-import org.enear.changelog.markdown.specific.ReaderException;
-import org.enear.changelog.markdown.specific.VersionHeading;
-import org.enear.changelog.utils.Range;
+import org.enear.maven.plugins.keepachangelog.git.GitServer;
+import org.enear.maven.plugins.keepachangelog.git.GitServerException;
+import org.enear.maven.plugins.keepachangelog.git.GitServerFactory;
+import org.enear.maven.plugins.keepachangelog.markdown.generic.RefLink;
+import org.enear.maven.plugins.keepachangelog.markdown.specific.ChangelogReader;
+import org.enear.maven.plugins.keepachangelog.markdown.specific.DiffRefLink;
+import org.enear.maven.plugins.keepachangelog.markdown.specific.ReaderException;
+import org.enear.maven.plugins.keepachangelog.markdown.specific.VersionHeading;
+import org.enear.maven.plugins.keepachangelog.utils.Range;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,7 +22,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 

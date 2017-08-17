@@ -1,4 +1,4 @@
-package org.enear.changelog.maven;
+package org.enear.maven.plugins.keepachangelog.maven;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Scm;

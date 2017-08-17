@@ -1,4 +1,4 @@
-package org.enear.changelog.markdown;
+package org.enear.maven.plugins.keepachangelog.markdown;
 
 public interface Markdown {
 

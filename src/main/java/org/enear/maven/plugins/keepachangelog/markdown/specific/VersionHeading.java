@@ -1,14 +1,14 @@
-package org.enear.changelog.markdown.specific;
+package org.enear.maven.plugins.keepachangelog.markdown.specific;
 
-import org.enear.changelog.markdown.Markdown;
-import org.enear.changelog.markdown.generic.Heading;
+import org.enear.maven.plugins.keepachangelog.markdown.Markdown;
+import org.enear.maven.plugins.keepachangelog.markdown.generic.Heading;
 
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.enear.changelog.InitMojo.UNRELEASED_VERSION;
+import static org.enear.maven.plugins.keepachangelog.InitMojo.UNRELEASED_VERSION;
 
 /**
  * A changelog version heading.

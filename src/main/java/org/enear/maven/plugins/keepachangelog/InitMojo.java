@@ -1,4 +1,4 @@
-package org.enear.changelog;
+package org.enear.maven.plugins.keepachangelog;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -8,14 +8,12 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
 import org.apache.maven.settings.crypto.SettingsDecrypter;
-import org.enear.changelog.git.TagUtils;
-import org.enear.changelog.maven.MavenUtils;
+import org.enear.maven.plugins.keepachangelog.git.TagUtils;
+import org.enear.maven.plugins.keepachangelog.maven.MavenUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
-
-import static org.enear.changelog.git.TagUtils.DEFAULT_TAG_FORMAT;
 
 /**
  * An abstract class common with functions common Mojos.
@@ -42,7 +40,7 @@ public class InitMojo extends AbstractMojo {
     @Parameter(defaultValue = "${settings}", readonly = true)
     protected Settings settings;
 
-    @Parameter(defaultValue = DEFAULT_TAG_FORMAT, readonly = true)
+    @Parameter(defaultValue = TagUtils.DEFAULT_TAG_FORMAT, readonly = true)
     protected String tagFormat;
 
     @Component(role = SettingsDecrypter.class)

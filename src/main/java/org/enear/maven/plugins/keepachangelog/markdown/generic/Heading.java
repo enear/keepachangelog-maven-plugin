@@ -1,12 +1,12 @@
-package org.enear.changelog.markdown.generic;
+package org.enear.maven.plugins.keepachangelog.markdown.generic;
 
-import org.enear.changelog.markdown.Markdown;
+import org.enear.maven.plugins.keepachangelog.markdown.Markdown;
 
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.enear.changelog.utils.StringUtils.repeat;
+import static org.enear.maven.plugins.keepachangelog.utils.StringUtils.repeat;
 
 /**
  * A markdown heading.

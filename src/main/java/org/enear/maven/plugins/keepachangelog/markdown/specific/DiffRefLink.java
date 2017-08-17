@@ -1,10 +1,10 @@
-package org.enear.changelog.markdown.specific;
+package org.enear.maven.plugins.keepachangelog.markdown.specific;
 
-import org.enear.changelog.git.GitServer;
-import org.enear.changelog.git.TagUtils;
-import org.enear.changelog.markdown.Markdown;
-import org.enear.changelog.markdown.generic.RefLink;
-import org.enear.changelog.utils.Range;
+import org.enear.maven.plugins.keepachangelog.git.GitServer;
+import org.enear.maven.plugins.keepachangelog.git.TagUtils;
+import org.enear.maven.plugins.keepachangelog.markdown.Markdown;
+import org.enear.maven.plugins.keepachangelog.markdown.generic.RefLink;
+import org.enear.maven.plugins.keepachangelog.utils.Range;
 
 import java.net.URL;
 

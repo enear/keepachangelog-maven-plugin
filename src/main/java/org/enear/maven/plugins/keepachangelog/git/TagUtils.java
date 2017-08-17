@@ -1,20 +1,20 @@
-package org.enear.changelog.git;
+package org.enear.maven.plugins.keepachangelog.git;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.LsRemoteCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import org.enear.changelog.utils.Range;
+import org.enear.maven.plugins.keepachangelog.utils.Range;
 
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.enear.changelog.InitMojo.UNRELEASED_VERSION;
-import static org.enear.changelog.utils.StringUtils.EMPTY_STRING;
-import static org.enear.changelog.utils.StringUtils.replace;
+import static org.enear.maven.plugins.keepachangelog.InitMojo.UNRELEASED_VERSION;
+import static org.enear.maven.plugins.keepachangelog.utils.StringUtils.EMPTY_STRING;
+import static org.enear.maven.plugins.keepachangelog.utils.StringUtils.replace;
 
 /**
  * Git utilities.

@@ -1,6 +1,6 @@
-package org.enear.changelog.git;
+package org.enear.maven.plugins.keepachangelog.git;
 
-import org.enear.changelog.utils.Range;
+import org.enear.maven.plugins.keepachangelog.utils.Range;
 
 import java.net.URL;
 

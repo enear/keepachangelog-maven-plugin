@@ -17,8 +17,8 @@
         <project.scm.id>my-scm-server</project.scm.id>
     </properties>
 
-    <groupId>co.enear</groupId>
-    <artifactId>changelog-maven-plugin</artifactId>
+    <groupId>co.enear.maven.plugins</groupId>
+    <artifactId>keepachangelog-maven-plugin</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
@@ -72,7 +72,6 @@
                 <artifactId>maven-plugin-plugin</artifactId>
                 <version>${maven.plugin.plugin.version}</version>
             </plugin>
-
         </plugins>
     </build>
 

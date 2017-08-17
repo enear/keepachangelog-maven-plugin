@@ -1,7 +1,7 @@
-package org.enear.changelog.markdown.generic;
+package org.enear.maven.plugins.keepachangelog.markdown.generic;
 
-import org.enear.changelog.markdown.Markdown;
-import org.enear.changelog.markdown.ParseException;
+import org.enear.maven.plugins.keepachangelog.markdown.Markdown;
+import org.enear.maven.plugins.keepachangelog.markdown.ParseException;
 
 import java.net.URL;
 import java.util.Optional;

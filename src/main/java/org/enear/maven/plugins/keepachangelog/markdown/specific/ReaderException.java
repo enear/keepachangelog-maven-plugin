@@ -1,4 +1,4 @@
-package org.enear.changelog.markdown.specific;
+package org.enear.maven.plugins.keepachangelog.markdown.specific;
 
 public class ReaderException extends RuntimeException {
 

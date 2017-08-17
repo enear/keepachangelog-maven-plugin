@@ -1,4 +1,4 @@
-package org.enear.changelog.git;
+package org.enear.maven.plugins.keepachangelog.git;
 
 /**
  * If an error occurs in a Git server.

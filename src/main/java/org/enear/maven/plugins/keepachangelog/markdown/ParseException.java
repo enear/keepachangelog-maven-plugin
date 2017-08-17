@@ -1,4 +1,4 @@
-package org.enear.changelog.markdown;
+package org.enear.maven.plugins.keepachangelog.markdown;
 
 /**
  * A runtime exception to be thrown when a fromMarkdown error occurs.
