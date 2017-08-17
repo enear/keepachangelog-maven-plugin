@@ -6,14 +6,17 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.enear.maven.plugins.keepachangelog.utils.Range;
+import org.enear.maven.plugins.keepachangelog.utils.StringUtils;
 
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.enear.maven.plugins.keepachangelog.InitMojo.UNRELEASED_VERSION;
 import static org.enear.maven.plugins.keepachangelog.utils.StringUtils.EMPTY_STRING;
+import static org.enear.maven.plugins.keepachangelog.utils.StringUtils.extract;
 import static org.enear.maven.plugins.keepachangelog.utils.StringUtils.replace;
 
 /**
@@ -81,5 +84,14 @@ public class TagUtils {
         String b = toTag(tagFormat, versionRange.getBegin());
         String e = toTag(tagFormat, versionRange.getEnd());
         return new Range<>(b, e);
+    }
+
+    /**
+     * Converts a tag to a version.
+     *
+     * @param tag the tag to be converted.
+     */
+    public static Optional<String> toVersion(String tagFormat, String tag) {
+        return extract(tag, VERSION_ID, tagFormat);
     }
 }

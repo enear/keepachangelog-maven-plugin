@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Task to validate a given changelog
+
 ### Fixed
 
 - Fix used undeclared dependencies

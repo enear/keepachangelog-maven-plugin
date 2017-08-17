@@ -4,11 +4,24 @@ This Maven plugin to manage changelogs that adheres to [Keep a
 Changelog](http://keepachangelog.com/en/1.0.0/). For now there is only one
 task: release.
 
+## Validate
+
+This task will perform some validations on your changelog.
+
+```bash
+mvn keepachangelog:validate
+```
+
+Namely it will check:
+
+ * If you have tags in your repository that are not in the changelog.
+ * If you have versions in your changelog that do not have corresponding tags.
+
 ## Release
 
 The release task can be executed as follows:
 
-```
+```bash
 mvn keepachangelog:release
 ```
 
@@ -61,14 +74,90 @@ Executing the `release` task would transform `CHANGELOG.md` into:
 [1.0]: https://github.com/me/myproject/compare/v0.5..v1.0
 ```
 
+## Options
+
 Additionally can use the following options:
 
  * `connectionUrl`: the connection URL for the Git repository. By default the
    connection URL is read from the `scm/connection` entry in `pom.xml`.
+ * `username`: the username to connect to the Git repository.
+ * `password`: the password to connect to the Git repository. Encrypted passwords
+   on `settings.xml` are supported that is the recommended way.
  * `tagFormat`: the format of a tag compared to a version. This is used to
    create version comparison URLs. The `${version}` placeholder will be
    replaced by versions found in the Changelog. The default value is
    `v${version}` which is the most popular Git tag format.
+
+## Password Encryption
+
+Since the `scm` entry does not support `id` you need to add the
+`project.scm.id` property to your `pom.xml`:
+
+```xml
+<project>
+  ...
+  <properties>
+    ...
+    <project.scm.id>my-scm-server</project.scm.id>
+    ...
+  </properties>
+  ...
+</project>
+```
+
+If you don't have the `$~/.m2/security-settings.xml` file you need to generate
+a master password: 
+
+```bash
+mvn --encrypt-master-password
+```
+
+Let's say the output is something like:
+
+```
+{jSMOWnoPFgsHVpMvz5VrIt5kRbzGpI8u+9EF1iFQyJQ=}
+```
+
+Create the `$~/.m2/security-settings.xml` file with the following content:
+
+```xml
+<settingsSecurity>
+  <master>{jSMOWnoPFgsHVpMvz5VrIt5kRbzGpI8u+9EF1iFQyJQ=}</master>
+</settingsSecurity>
+```
+
+Input your Git repository password after the following command:
+
+```bash
+mvn --encrypt-password
+```
+
+The command will generate an encrypted password, such as:
+
+```
+{COQLCE6DU6GtcS5P=}
+```
+
+Finally add the following entry to the `~/.m2/settings.xml` file:
+
+```xml
+<settings>
+  ...
+  <servers>
+    ...
+    <server>
+      <id>my-scm-server</id>
+      <username>foo</username>
+      <password>{COQLCE6DU6GtcS5P=}</password>
+    </server>
+    ...
+  </servers>
+  ...
+</settings>
+```
+
+More information on the [maven encryption
+guide](https://maven.apache.org/guides/mini/guide-encryption.html).
 
 ## Known Issues
 
@@ -78,7 +167,5 @@ These are the known issues and possible fixes:
  * Only GitHub and BitBucket are supported.
  * The Changelog syntax is not checked. Could be fixed by parsing the Markdown
    and checking if it corresponds to a Changelog.
- * The Changelog may have versions that are not tags in the Git repository.
-   Could be fixed by comparing Git tags with Changelog versions.
  * Every reference link is deleted even if it's not referencing a version.
    Could be fixed by checking if the reference is a known version.
