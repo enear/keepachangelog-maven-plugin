@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.1.0] - 2017-08-17
+
 ### Added
 
 - Task to validate a given changelog
@@ -21,4 +23,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Task to release a given changelog
 
-[1.0.0]: https://github.com/enear/changelog-maven-plugin/compare/v1.0.0..HEAD
+[1.1.0]: https://github.com/enear/changelog-maven-plugin/compare/v1.1.0..HEAD
+[1.0.0]: https://github.com/enear/changelog-maven-plugin/compare/v1.0.0..v1.1.0
