@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.0] - 2017-08-17
+
 ### Added
 
-- This plugin automatically releases a given changelog
+- Task to release a given changelog
+
+[1.0.0]: https://github.com/enear/changelog-maven-plugin/compare/v1.0.0..HEAD
