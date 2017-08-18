@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Discrepancy in documentation.
+- The version reference links should be comparing the previous version instead
+  of the next version.
 
 ## [1.1.1] - 2017-08-18
 

@@ -37,10 +37,10 @@ public class DiffRefLink implements Markdown {
 
     @Override
     public String toMarkdown() {
-        String begin = versionRange.getBegin();
+        String end = versionRange.getEnd();
         Range<String> tagRange = TagUtils.toTagRange(tagFormat, versionRange);
         URL diff = gitServer.diff(tagRange);
-        RefLink refLink = new RefLink(begin, diff);
+        RefLink refLink = new RefLink(end, diff);
         return refLink.toMarkdown();
     }
 }
