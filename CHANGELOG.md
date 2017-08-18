@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.1.1] - 2017-08-18
+
 ### Fixed
 
 - Broken GitHub version comparison URLs.
@@ -27,5 +29,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Task to release a given changelog
 
-[1.1.0]: https://github.com/enear/changelog-maven-plugin/compare/v1.1.0...HEAD
+[1.1.1]: https://github.com/enear/changelog-maven-plugin/compare/v1.1.1...HEAD
+[1.1.0]: https://github.com/enear/changelog-maven-plugin/compare/v1.1.0...v1.1.1
 [1.0.0]: https://github.com/enear/changelog-maven-plugin/compare/v1.0.0...v1.1.0
