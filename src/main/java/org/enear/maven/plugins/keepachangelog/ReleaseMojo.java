@@ -50,9 +50,9 @@ public class ReleaseMojo extends InitMojo {
      * @param bw          the writer for the updated changelog.
      * @throws IOException if an I/O error occurs.
      */
-    private void writeNewVersion(String currVersion, BufferedWriter bw) throws IOException {
-        VersionHeading currVerHeading = new VersionHeading(currVersion, LocalDate.now());
-        VersionHeading unrelVerHeading = VersionHeading.unreleased();
+    private void writeNewVersion(String currVersion, boolean refLink, BufferedWriter bw) throws IOException {
+        VersionHeading unrelVerHeading = VersionHeading.unreleased(true);
+        VersionHeading currVerHeading = new VersionHeading(currVersion, LocalDate.now(), refLink);
 
         bw.write(unrelVerHeading.toMarkdown());
         bw.newLine();
@@ -106,7 +106,8 @@ public class ReleaseMojo extends InitMojo {
                 protected void onVersionHeading(VersionHeading versionHeading) {
                     try {
                         if (versionHeading.isUnreleased()) {
-                            writeNewVersion(currVersion, bw);
+                            boolean refLink = versionHeading.isRefLink();
+                            writeNewVersion(currVersion, refLink, bw);
                             parsedVersions.add(UNRELEASED_VERSION);
                             parsedVersions.add(currVersion);
                         } else {

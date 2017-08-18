@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- First version is not a reference link. All versions have a link comparing
+  with the previous version but the first version as no previous version. So
+  instead of having `## [1.0.0]` as a first version heading it should be `##
+  1.0.0` instead.
+
 ## [1.2.0] - 2017-08-18
 
 ### Fixed
@@ -31,7 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Fix used undeclared dependencies
 
-## [1.0.0] - 2017-08-17
+## 1.0.0 - 2017-08-17
 
 ### Added
 

@@ -1,4 +1,4 @@
-# Keep a changelog Maven Plugin
+# Keep a changelog Maven plugin
 
 This Maven plugin to manage changelogs that adheres to [keep a
 changelog](http://keepachangelog.com/en/1.0.0/). The plugin tasks are described
@@ -54,7 +54,7 @@ And this is your `CHANGELOG.md`:
 
 ## [Unreleased]
 
-## [0.5] - 2017-05-05
+## 0.5 - 2017-05-05
 
 [Unreleased]: https://github.com/me/myproject/compare/v0.5..vHEAD
 ```
@@ -68,7 +68,7 @@ Executing the `release` task would transform `CHANGELOG.md` into:
 
 ## [1.0] - 2017-08-03
 
-## [0.5] - 2017-05-05
+## 0.5 - 2017-05-05
 
 [Unreleased]: https://github.com/me/myproject/compare/v1.0..vHEAD
 [1.0]: https://github.com/me/myproject/compare/v0.5..v1.0

@@ -19,39 +19,69 @@ public class VersionHeading implements Markdown {
     private static final String DATE_ID = "date";
 
     private static final int HEADING_LEVEL = 2;
-    private static final String TEXT_REGEX = String.format("^\\[(?<%s>.+)\\](?: - (?<%s>.+))?$", VERSION_ID, DATE_ID);
+    private static final String VERSION_REGEX = "(?<" + VERSION_ID + ">[\\w\\.-]+)";
+    private static final String VERSION_LINK_REGEX = "\\[" + VERSION_REGEX + "\\]";
+    private static final String DATE_REGEX = "(?: - (?<" + DATE_ID + ">.+))?";
+    private static final String TEXT_REGEX = "^" + VERSION_REGEX + DATE_REGEX + "$";
+    private static final String TEXT_LINK_REGEX = "^" + VERSION_LINK_REGEX + DATE_REGEX + "$";
+
     private static final Pattern textPattern = Pattern.compile(TEXT_REGEX);
+    private static final Pattern textLinkPattern = Pattern.compile(TEXT_LINK_REGEX);
 
     private String version;
     private LocalDate date;
+    private boolean refLink;
 
     /**
      * Creates a new version heading.
      *
      * @param version the version.
      * @param date    the date this version was created.
+     * @param refLink true if the version is a reference link or false otherwise.
      */
-    public VersionHeading(String version, LocalDate date) {
+    public VersionHeading(String version, LocalDate date, boolean refLink) {
         this.version = version;
         this.date = date;
+        this.refLink = refLink;
     }
 
     /**
      * Creates a new version heading without a date.
      *
      * @param version the version.
+     * @param refLink true the version is a reference link or false otherwise.
      */
-    public VersionHeading(String version) {
-        this(version, null);
+    public VersionHeading(String version, boolean refLink) {
+        this(version, null, refLink);
     }
 
     /**
      * Creates an unreleased version heading.
      *
+     * @param refLink true the version is a reference link or false otherwise.
      * @return an unreleased version heading.
      */
-    public static VersionHeading unreleased() {
-        return new VersionHeading(UNRELEASED_VERSION);
+    public static VersionHeading unreleased(boolean refLink) {
+        return new VersionHeading(UNRELEASED_VERSION, refLink);
+    }
+
+    private static Optional<VersionHeading> parse(String text, Pattern pattern, boolean refLink) {
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.matches()) {
+            String version = matcher.group(VERSION_ID);
+            LocalDate date = parseDate(matcher.group(DATE_ID));
+            return Optional.of(new VersionHeading(version, date, refLink));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private static Optional<VersionHeading> parseNoLink(String text) {
+        return parse(text, textPattern, false);
+    }
+
+    private static Optional<VersionHeading> parseLink(String text) {
+        return parse(text, textLinkPattern, true);
     }
 
     /**
@@ -65,14 +95,10 @@ public class VersionHeading implements Markdown {
             return Optional.empty();
 
         String text = heading.getText();
-        Matcher matcher = textPattern.matcher(text);
-        if (matcher.matches()) {
-            String version = matcher.group(VERSION_ID);
-            LocalDate date = parseDate(matcher.group(DATE_ID));
-            return Optional.of(new VersionHeading(version, date));
-        } else {
-            return Optional.empty();
-        }
+        Optional<VersionHeading> opt = parseLink(text);
+        if (!opt.isPresent())
+            opt = parseNoLink(text);
+        return opt;
     }
 
     /**
@@ -113,6 +139,15 @@ public class VersionHeading implements Markdown {
     }
 
     /**
+     * Returns true if the version is a reference link or false otherwise.
+     *
+     * @return true if the version is a reference link or false otherwise.
+     */
+    public boolean isRefLink() {
+        return refLink;
+    }
+
+    /**
      * Returns true if the version is unreleased or false otherwise.
      *
      * @return true if the version is unreleased or false otherwise.
@@ -123,13 +158,18 @@ public class VersionHeading implements Markdown {
 
     @Override
     public String toString() {
-        return "VersionHeading(" + version + ", " + date + ")";
+        return "VersionHeading(" + version + ", " + date + ", " + refLink + ")";
     }
 
     @Override
     public String toMarkdown() {
         StringBuilder sb = new StringBuilder();
-        sb.append("## [").append(version).append("]");
+        sb.append("## ");
+        if (refLink)
+            sb.append("[");
+        sb.append(version);
+        if (refLink)
+            sb.append("]");
         if (date != null) {
             sb.append(" - ").append(date);
         }
