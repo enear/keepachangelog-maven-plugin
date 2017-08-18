@@ -1,8 +1,8 @@
-# Changelog Maven Plugin
+# Keep a changelog Maven Plugin
 
-This Maven plugin to manage changelogs that adheres to [Keep a
-Changelog](http://keepachangelog.com/en/1.0.0/). For now there is only one
-task: release.
+This Maven plugin to manage changelogs that adheres to [keep a
+changelog](http://keepachangelog.com/en/1.0.0/). The plugin tasks are described
+next.
 
 ## Validate
 
