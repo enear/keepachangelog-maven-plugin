@@ -69,7 +69,7 @@ public class GitHubServer extends BaseGitServer implements GitServer {
     public URL diff(String a, String b) {
         try {
             initDiffUrl();
-            String spec = String.format("%s/%s..%s", diffUrl, a, b);
+            String spec = String.format("%s/%s...%s", diffUrl, a, b);
             return new URL(spec);
         } catch (MalformedURLException e) {
             throw new GitServerException("Failed to create a diff link.", e);
