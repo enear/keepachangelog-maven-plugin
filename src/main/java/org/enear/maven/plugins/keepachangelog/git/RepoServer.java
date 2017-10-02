@@ -7,7 +7,7 @@ import java.net.URL;
 /**
  * Represents a Git Server.
  */
-public interface GitServer {
+public interface RepoServer {
 
     /**
      * Returns an URL that compares two commits.

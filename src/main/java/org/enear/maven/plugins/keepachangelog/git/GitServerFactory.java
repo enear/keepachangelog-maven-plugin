@@ -14,17 +14,17 @@ public class GitServerFactory {
      * Returns a Git Server based on a given repository URL.
      *
      * @param originUrl a repository URL.
-     * @return a Git Server.
+     * @return a Repository Server.
      * @throws GitServerException if the repository URL is malformed.
      */
-    public static GitServer from(URL originUrl) {
+    public static RepoServer from(URL originUrl) {
         String host = originUrl.getHost();
         if (host.startsWith(BITBUCKET_HOST_PREFIX)) {
             return new BitBucketServer(originUrl);
         } else if (host.startsWith(GITHUB_HOST_PREFIX)) {
             return new GitHubServer(originUrl);
         } else {
-            throw new GitServerException("Unknown Git server.");
+            return null;
         }
     }
 
