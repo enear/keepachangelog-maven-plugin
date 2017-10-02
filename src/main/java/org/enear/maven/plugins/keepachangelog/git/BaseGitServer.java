@@ -4,7 +4,7 @@ import org.enear.maven.plugins.keepachangelog.utils.Range;
 
 import java.net.URL;
 
-public abstract class BaseGitServer implements GitServer {
+public abstract class BaseGitServer implements RepoServer {
 
     @Override
     public URL diff(Range<String> range) {

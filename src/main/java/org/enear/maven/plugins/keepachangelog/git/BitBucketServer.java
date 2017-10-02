@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 /**
  * A BitBucket server representation.
  */
-public class BitBucketServer extends BaseGitServer implements GitServer {
+public class BitBucketServer extends BaseGitServer implements RepoServer {
 
     private static final String PROJECT_ID = "project";
     private static final String REPO_ID = "repository";
