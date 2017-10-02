@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- When an unknown server was detected the release command would not
+  complete but there is no logical reason for that to happen as a change
+  log does not have to have a diff list. Instead if a server is unknown the
+  release command simply does not write the diff list.
+
 ## [1.2.1] - 2017-08-18
 
 ### Fixed

@@ -3,7 +3,7 @@ package org.enear.maven.plugins.keepachangelog;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.enear.maven.plugins.keepachangelog.git.GitServer;
+import org.enear.maven.plugins.keepachangelog.git.RepoServer;
 import org.enear.maven.plugins.keepachangelog.git.GitServerException;
 import org.enear.maven.plugins.keepachangelog.git.GitServerFactory;
 import org.enear.maven.plugins.keepachangelog.markdown.generic.RefLink;
@@ -64,13 +64,13 @@ public class ReleaseMojo extends InitMojo {
     /**
      * Writes a list of version comparison links.
      *
-     * @param gitServer the git server
+     * @param repoServer the git server
      * @param tagRange  the tag ranges.
      * @param bw        the buffered writer.
      * @throws IOException if an error occurs while writing.
      */
-    private void writeDiffLink(GitServer gitServer, Range<String> tagRange, BufferedWriter bw) throws IOException {
-        DiffRefLink diffRefLink = new DiffRefLink(tagFormat, gitServer, tagRange);
+    private void writeDiffLink(RepoServer repoServer, Range<String> tagRange, BufferedWriter bw) throws IOException {
+        DiffRefLink diffRefLink = new DiffRefLink(tagFormat, repoServer, tagRange);
         bw.write(diffRefLink.toMarkdown());
         bw.newLine();
     }
@@ -78,14 +78,16 @@ public class ReleaseMojo extends InitMojo {
     /**
      * Writes links to version differences based on tag ranges and a git server.
      *
-     * @param gitServer the git server where the URL will be used to write the Git version differences.
+     * @param repoServer the git server where the URL will be used to write the Git version differences.
      * @param bw        the writer for the updated changelog.
      * @throws IOException if an I/O error occurs.
      */
-    private void writeDiffLinks(GitServer gitServer, BufferedWriter bw) throws IOException {
-        List<Range<String>> tagRanges = getTagRanges();
-        for (Range<String> tagRange : tagRanges) {
-            writeDiffLink(gitServer, tagRange, bw);
+    private void writeDiffLinks(RepoServer repoServer, BufferedWriter bw) throws IOException {
+        if ( repoServer != null ) {
+            List<Range<String>> tagRanges = getTagRanges();
+            for (Range<String> tagRange : tagRanges) {
+                writeDiffLink(repoServer, tagRange, bw);
+            }
         }
     }
 
@@ -97,7 +99,7 @@ public class ReleaseMojo extends InitMojo {
      * @param path        the path of the changelog to update.
      * @throws MojoFailureException if an error occur.
      */
-    private void writeNewChangelog(String currVersion, GitServer gitServer,
+    private void writeNewChangelog(String currVersion, RepoServer gitServer,
                                    Path path) throws MojoFailureException {
         Path temp = createTempChangelog();
         try (BufferedWriter bw = Files.newBufferedWriter(temp)) {
@@ -169,7 +171,7 @@ public class ReleaseMojo extends InitMojo {
      * @return the origin repository.
      * @throws GitServerException if an error occurs while getting the origin repository.
      */
-    private GitServer getOriginRepo(URL url) {
+    private RepoServer getOriginRepo(URL url) {
         return GitServerFactory.from(url);
     }
 
@@ -229,7 +231,7 @@ public class ReleaseMojo extends InitMojo {
 
         Path path = getChangelogPath();
         String version = getAppVersion();
-        GitServer origin = getOriginRepo(connectionUrl);
+        RepoServer origin = getOriginRepo(connectionUrl);
         writeNewChangelog(version, origin, path);
     }
 

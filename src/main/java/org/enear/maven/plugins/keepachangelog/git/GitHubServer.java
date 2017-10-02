@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GitHubServer extends BaseGitServer implements GitServer {
+public class GitHubServer extends BaseGitServer implements RepoServer {
 
     private static final String USER_ID = "username";
     private static final String REPO_ID = "repository";

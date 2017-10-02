@@ -1,6 +1,6 @@
 package org.enear.maven.plugins.keepachangelog.markdown.specific;
 
-import org.enear.maven.plugins.keepachangelog.git.GitServer;
+import org.enear.maven.plugins.keepachangelog.git.RepoServer;
 import org.enear.maven.plugins.keepachangelog.git.TagUtils;
 import org.enear.maven.plugins.keepachangelog.markdown.Markdown;
 import org.enear.maven.plugins.keepachangelog.markdown.generic.RefLink;
@@ -14,7 +14,7 @@ import java.net.URL;
 public class DiffRefLink implements Markdown {
 
     private String tagFormat;
-    private GitServer gitServer;
+    private RepoServer repoServer;
     private Range<String> versionRange;
 
     /**
@@ -24,9 +24,9 @@ public class DiffRefLink implements Markdown {
      * @param gitServer    the git server.
      * @param versionRange the version range.
      */
-    public DiffRefLink(String tagFormat, GitServer gitServer, Range<String> versionRange) {
+    public DiffRefLink(String tagFormat, RepoServer repoServer, Range<String> versionRange) {
         this.tagFormat = tagFormat;
-        this.gitServer = gitServer;
+        this.repoServer = repoServer;
         this.versionRange = versionRange;
     }
 
@@ -39,7 +39,7 @@ public class DiffRefLink implements Markdown {
     public String toMarkdown() {
         String end = versionRange.getEnd();
         Range<String> tagRange = TagUtils.toTagRange(tagFormat, versionRange);
-        URL diff = gitServer.diff(tagRange);
+        URL diff = repoServer.diff(tagRange);
         RefLink refLink = new RefLink(end, diff);
         return refLink.toMarkdown();
     }
