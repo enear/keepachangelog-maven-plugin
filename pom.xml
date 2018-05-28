@@ -23,6 +23,33 @@
     <artifactId>keepachangelog-maven-plugin</artifactId>
     <version>1.2.1</version>
     <packaging>maven-plugin</packaging>
+    <name>Keep a changelog Maven plugin</name>
+    <description>A Maven plugin to manage changelogs that adhere to keep a changelog</description>
+    <url>https://github.com/enear/keepachangelog-maven-plugin</url>
+    <inceptionYear>2017</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Emanuel Couto</name>
+            <email>unit73e@gmail.com</email>
+            <organization>e.near</organization>
+            <organizationUrl>http://www.enear.co</organizationUrl>
+        </developer>
+        <developer>
+            <name>Lara Caiola</name>
+            <email>lara.caiola@inseinc.com</email>
+            <organization>e.enear</organization>
+            <organizationUrl>http://www.enear.co</organizationUrl>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>
@@ -67,12 +94,12 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.10.19</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.10.19</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -123,6 +150,7 @@
     <scm>
         <connection>scm:git:https://github.com/enear/keepachangelog-maven-plugin.git</connection>
         <developerConnection>scm:git:https://github.com/enear/keepachangelog-maven-plugin.git</developerConnection>
+        <url>https://github.com/enear/keepachangelog-maven-plugin/tree/master</url>
     </scm>
 
 </project>
