@@ -10,6 +10,7 @@
         <maven.plugin.api.version>3.5.0</maven.plugin.api.version>
         <maven.plugin.annotations.version>3.5</maven.plugin.annotations.version>
         <maven.compiler.plugin.version>3.6.2</maven.compiler.plugin.version>
+        <maven.plugin.javadoc.version>3.0.0</maven.plugin.javadoc.version>
         <maven.settings.version>3.5.0</maven.settings.version>
         <maven.settings.builder.version>3.5.0</maven.settings.builder.version>
         <maven.project.version>2.2.1</maven.project.version>
@@ -117,6 +118,11 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
                 <version>${maven.plugin.plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven.plugin.javadoc.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

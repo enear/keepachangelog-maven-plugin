@@ -77,7 +77,7 @@ public class Range<N> {
      * Returns a list of ranges given two lists. If one list is short, excess elements of the larger list are discarded.
      * <p>
      * Example:
-     * pre>{@code
+     * <pre>{@code
      * List<Integer> xs = Arrays.asList(1, 2, 3);
      * List<Integer> ys = Arrays.asList(2, 4, 5, 6);
      * Range.zip(xs, ys); // [Range(1,2), Range(2,4), Range(3,5)]

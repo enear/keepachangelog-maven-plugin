@@ -12,10 +12,10 @@ package co.enear.maven.plugins.keepachangelog.git;
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -85,7 +85,8 @@ public class TagUtils {
     /**
      * Converts a version to a tag.
      *
-     * @param version the version to be converted.
+     * @param tagFormat the format of the tag (e.g., {@code v${version}}.
+     * @param version   the version to be converted.
      * @return a tag.
      */
     public static String toTag(String tagFormat, String version) {
@@ -112,7 +113,9 @@ public class TagUtils {
     /**
      * Converts a tag to a version.
      *
-     * @param tag the tag to be converted.
+     * @param tagFormat the format of the tag (e.g., {@code v${version}}.
+     * @param tag       the tag to be converted.
+     * @return the version.
      */
     public static Optional<String> toVersion(String tagFormat, String tag) {
         return StringUtils.extract(tag, VERSION_ID, tagFormat);

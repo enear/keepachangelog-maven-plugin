@@ -12,10 +12,10 @@ package co.enear.maven.plugins.keepachangelog.utils;
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -42,9 +42,9 @@ public class StringUtils {
     /**
      * Repeats the given characters {@code n} times.
      *
-     * @param c the
-     * @param n
-     * @return
+     * @param c the character to be repeated.
+     * @param n the number of repetitions.
+     * @return the given character {@code n} times.
      */
     public static String repeat(char c, int n) {
         char[] cs = new char[n];
@@ -55,24 +55,22 @@ public class StringUtils {
     /**
      * Replaces embed variable reference with a value.
      * <p>
-     * For example
-     * <p>
+     * For example;
      * <pre>{@code
      * replace("I have ${apples} apples", "apples", 3);
      * }
      * </pre>
      * <p>
      * Will return:
-     * <p>
      * <pre>{@code
      * I have 3 apples
      * }
      * </pre>
      *
-     * @param str
-     * @param id
-     * @param value
-     * @return
+     * @param str   the string to have a variable replaced with a value.
+     * @param id    the id of the variable.
+     * @param value the value.
+     * @return the string with the value.
      */
     public static String replace(String str, String id, String value) {
         String regex = String.format(VAR_REGEX, id);
