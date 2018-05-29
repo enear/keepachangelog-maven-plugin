@@ -6,10 +6,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <nexus.staging.maven.plugin.version>1.6.7</nexus.staging.maven.plugin.version>
         <maven.plugin.plugin.version>3.5</maven.plugin.plugin.version>
         <maven.plugin.api.version>3.5.0</maven.plugin.api.version>
         <maven.plugin.annotations.version>3.5</maven.plugin.annotations.version>
         <maven.compiler.plugin.version>3.6.2</maven.compiler.plugin.version>
+        <maven.source.plugin.version>2.2.1</maven.source.plugin.version>
         <maven.plugin.javadoc.version>3.0.0</maven.plugin.javadoc.version>
         <maven.plugin.gpg.version>1.5</maven.plugin.gpg.version>
         <maven.settings.version>3.5.0</maven.settings.version>
@@ -19,6 +21,8 @@
         <jgit.version>4.8.0.201706111038-r</jgit.version>
         <project.scm.id>my-scm-server</project.scm.id>
         <junit.version>4.12</junit.version>
+        <license.maven.plugin>1.15</license.maven.plugin>
+        <mockito.version>1.10.19</mockito.version>
     </properties>
 
     <groupId>co.enear.maven.plugins</groupId>
@@ -73,7 +77,7 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-settings-builder</artifactId>
-            <version>3.5.0</version>
+            <version>${maven.settings.builder.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -99,7 +103,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
-            <version>1.10.19</version>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -122,6 +126,19 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven.plugin.javadoc.version}</version>
                 <executions>
@@ -136,7 +153,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>1.15</version>
+                <version>${license.maven.plugin}</version>
                 <configuration>
                     <licenseName>mit</licenseName>
                     <inceptionYear>2017</inceptionYear>
@@ -173,6 +190,17 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${nexus.staging.maven.plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -181,5 +209,16 @@
         <developerConnection>scm:git:https://github.com/enear/keepachangelog-maven-plugin.git</developerConnection>
         <url>https://github.com/enear/keepachangelog-maven-plugin/tree/master</url>
     </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
 </project>
