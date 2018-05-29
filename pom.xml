@@ -23,7 +23,7 @@
 
     <groupId>co.enear.maven.plugins</groupId>
     <artifactId>keepachangelog-maven-plugin</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <packaging>maven-plugin</packaging>
     <name>Keep a changelog Maven plugin</name>
     <description>A Maven plugin to manage changelogs that adhere to keep a changelog</description>
