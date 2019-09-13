@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.2.3] - 2019-09-13
+
+### Fixed
+
+- Every reference link was being deleted in order to generate version diff reference links at the end of the file.
+  This would mean that a user could not have it's own reference links. Instead the only reference links that are
+  deleted are the ones that correspond to detected versions. 
+
 ## [1.2.2] - 2018-05-29
 
 ### Changed
@@ -55,7 +63,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Task to release a given changelog
 
-[Unreleased]: https://github.com/enear/keepachangelog-maven-plugin/compare/v1.2.2...HEAD
+[Unreleased]: https://github.com/enear/keepachangelog-maven-plugin/compare/v1.2.3...HEAD
+[1.2.3]: https://github.com/enear/keepachangelog-maven-plugin/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/enear/keepachangelog-maven-plugin/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/enear/keepachangelog-maven-plugin/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/enear/keepachangelog-maven-plugin/compare/v1.1.1...v1.2.0

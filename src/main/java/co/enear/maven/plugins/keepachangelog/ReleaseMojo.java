@@ -12,10 +12,10 @@ package co.enear.maven.plugins.keepachangelog;
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -91,8 +91,8 @@ public class ReleaseMojo extends InitMojo {
      * Writes a list of version comparison links.
      *
      * @param repoServer the git server
-     * @param tagRange  the tag ranges.
-     * @param bw        the buffered writer.
+     * @param tagRange   the tag ranges.
+     * @param bw         the buffered writer.
      * @throws IOException if an error occurs while writing.
      */
     private void writeDiffLink(RepoServer repoServer, Range<String> tagRange, BufferedWriter bw) throws IOException {
@@ -105,11 +105,11 @@ public class ReleaseMojo extends InitMojo {
      * Writes links to version differences based on tag ranges and a git server.
      *
      * @param repoServer the git server where the URL will be used to write the Git version differences.
-     * @param bw        the writer for the updated changelog.
+     * @param bw         the writer for the updated changelog.
      * @throws IOException if an I/O error occurs.
      */
     private void writeDiffLinks(RepoServer repoServer, BufferedWriter bw) throws IOException {
-        if ( repoServer != null ) {
+        if (repoServer != null) {
             List<Range<String>> tagRanges = getTagRanges();
             for (Range<String> tagRange : tagRanges) {
                 writeDiffLink(repoServer, tagRange, bw);
@@ -151,6 +151,14 @@ public class ReleaseMojo extends InitMojo {
 
                 @Override
                 protected void onRefLink(RefLink refLink) {
+                    try {
+                        if (!parsedVersions.contains(refLink.getRef())) {
+                            bw.write(refLink.toMarkdown());
+                            bw.newLine();
+                        }
+                    } catch (IOException e) {
+                        throw new ReaderException("Failed to write ref link", e);
+                    }
                 }
 
                 @Override

@@ -167,5 +167,3 @@ These are the known issues and possible fixes:
  * Only GitHub and BitBucket are supported.
  * The Changelog syntax is not checked. Could be fixed by parsing the Markdown
    and checking if it corresponds to a Changelog.
- * Every reference link is deleted even if it's not referencing a version.
-   Could be fixed by checking if the reference is a known version.

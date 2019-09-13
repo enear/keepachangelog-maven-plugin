@@ -59,6 +59,14 @@ public class RefLink implements Markdown {
         this.link = link;
     }
 
+    public String getRef() {
+        return ref;
+    }
+
+    public URL getLink() {
+        return link;
+    }
+
     /**
      * Creates a new reference link from a given markdown line.
      *
