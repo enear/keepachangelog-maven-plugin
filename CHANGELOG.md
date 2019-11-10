@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Skip support.
+
 ### Fixed
 
 - Uncaught exception when the changelog was not found. Besides throwing an exception it would have the undesired

@@ -279,6 +279,7 @@ public class ReleaseMojo extends InitMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         super.execute();
+        if (skip) return;
         writeNewChangelog();
     }
 }

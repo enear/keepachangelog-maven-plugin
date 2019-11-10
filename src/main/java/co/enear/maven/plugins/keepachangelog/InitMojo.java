@@ -69,6 +69,9 @@ public class InitMojo extends AbstractMojo {
     @Parameter(defaultValue = TagUtils.DEFAULT_TAG_FORMAT, readonly = true)
     protected String tagFormat;
 
+    @Parameter(defaultValue = "false", readonly = true)
+    protected boolean skip;
+
     @Component(role = SettingsDecrypter.class)
     protected SettingsDecrypter settingsDecrypter;
 
@@ -114,7 +117,7 @@ public class InitMojo extends AbstractMojo {
      *
      * @return the path of the changelog.
      */
-    protected Path getChangelogPath() {
+    Path getChangelogPath() {
         Path basedir = project.getBasedir().toPath();
         return basedir.resolve(CHANGELOG_FILENAME);
     }

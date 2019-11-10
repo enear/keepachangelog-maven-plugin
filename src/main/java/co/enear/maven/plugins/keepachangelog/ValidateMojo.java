@@ -74,6 +74,7 @@ public class ValidateMojo extends InitMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         super.execute();
+        if (skip) return;
         Path path = getChangelogPath();
         validate(path);
     }
