@@ -44,6 +44,10 @@ public class GitServerFactory {
      * @throws GitServerException if the repository URL is malformed.
      */
     public static RepoServer from(URL originUrl) {
+        if (originUrl == null) {
+            return null;
+        }
+
         String host = originUrl.getHost();
         if (host.startsWith(BITBUCKET_HOST_PREFIX)) {
             return new BitBucketServer(originUrl);
