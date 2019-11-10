@@ -44,7 +44,7 @@ public abstract class ChangelogReader {
 
     private void readLine(String line) {
         boolean parsedLine = false;
-        if (!parsedLine) {
+        {
             Optional<VersionHeading> opt = VersionHeading.parse(line);
             if (opt.isPresent()) {
                 VersionHeading versionHeading = opt.get();
@@ -70,7 +70,7 @@ public abstract class ChangelogReader {
     public void read(Path path) {
         try {
             try (Stream<String> stream = Files.lines(path)) {
-                stream.forEach(line -> readLine(line));
+                stream.forEach(this::readLine);
             } catch (IOException e) {
                 e.printStackTrace();
             }

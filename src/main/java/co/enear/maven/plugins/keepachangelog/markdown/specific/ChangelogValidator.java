@@ -32,10 +32,7 @@ import co.enear.maven.plugins.keepachangelog.git.TagUtils;
 
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static co.enear.maven.plugins.keepachangelog.InitMojo.UNRELEASED_VERSION;
@@ -43,8 +40,8 @@ import static co.enear.maven.plugins.keepachangelog.InitMojo.UNRELEASED_VERSION;
 public class ChangelogValidator extends ChangelogReader {
 
     private Set<String> parsedVersions = new HashSet<>();
-    private Set<String> versionsWithoutTags = Collections.EMPTY_SET;
-    private Set<String> tagsWithoutVersions = Collections.EMPTY_SET;
+    private Set<String> versionsWithoutTags = Collections.emptySet();
+    private Set<String> tagsWithoutVersions = Collections.emptySet();
 
     private URL url;
     private String username;
@@ -89,8 +86,8 @@ public class ChangelogValidator extends ChangelogReader {
         tags.remove(UNRELEASED_VERSION);
         return tags.stream().map(tag ->
                 TagUtils.toVersion(tagFormat, tag)).
-                filter(o -> o.isPresent()).
-                map(o -> o.get()).
+                filter(Optional::isPresent).
+                map(Optional::get).
                 collect(Collectors.toSet());
     }
 

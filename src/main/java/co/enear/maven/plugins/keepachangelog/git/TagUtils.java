@@ -36,6 +36,7 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.net.URL;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,11 +48,11 @@ import static co.enear.maven.plugins.keepachangelog.InitMojo.UNRELEASED_VERSION;
  */
 public class TagUtils {
 
-    public static final String VERSION_ID = "version";
+    private static final String VERSION_ID = "version";
     public static final String DEFAULT_TAG_FORMAT = "v${" + VERSION_ID + "}";
 
-    public static final String HEAD = "HEAD";
-    public static final String REFS_TAGS = "refs/tags/";
+    private static final String HEAD = "HEAD";
+    private static final String REFS_TAGS = "refs/tags/";
 
     private static String getTagName(Ref tagRef) {
         return tagRef.getName().replaceFirst(REFS_TAGS, StringUtils.EMPTY_STRING);
@@ -68,6 +69,9 @@ public class TagUtils {
      */
     public static List<String> getTags(URL url, String username, String password)
             throws GitAPIException {
+        if (url == null)
+            return Collections.emptyList();
+
         LsRemoteCommand cmd = Git.lsRemoteRepository();
         cmd.setRemote(url.toString());
         if (username != null && password != null) {
@@ -78,7 +82,7 @@ public class TagUtils {
         Collection<Ref> refs = cmd.call();
         return refs.stream()
                 .filter(ref -> ref.getName().startsWith(REFS_TAGS))
-                .map(tag -> getTagName(tag))
+                .map(TagUtils::getTagName)
                 .collect(Collectors.toList());
     }
 
