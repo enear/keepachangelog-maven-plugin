@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Uncaught exception when the changelog was not found. Besides throwing an exception it would have the undesired
+  secondary effect of creating an empty file. When the changelog is not found it will simply show a warning. Perhaps it
+  would be a good idea to have an option to fail on error in the future.
 - Uncaught exception when the SCM was undefined.
 
 ## [1.2.3] - 2019-09-13

@@ -38,6 +38,8 @@ import co.enear.maven.plugins.keepachangelog.markdown.specific.DiffRefLink;
 import co.enear.maven.plugins.keepachangelog.markdown.specific.ReaderException;
 import co.enear.maven.plugins.keepachangelog.markdown.specific.VersionHeading;
 import co.enear.maven.plugins.keepachangelog.utils.Range;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -63,6 +65,8 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  */
 @Mojo(name = "release")
 public class ReleaseMojo extends InitMojo {
+
+    private static final Logger logger = LoggerFactory.getLogger(ReleaseMojo.class);
 
     private static final String CHANGELOG_TMP_PREFIX = "changelog";
     private static final String CHANGELOG_TMP_SUFFIX = ".tmp";
@@ -127,6 +131,11 @@ public class ReleaseMojo extends InitMojo {
      */
     private void writeNewChangelog(String currVersion, RepoServer gitServer,
                                    Path path) throws MojoFailureException {
+        if (!Files.isRegularFile(path)) {
+            logger.warn("Changelog file not found. Skipping release.");
+            return;
+        }
+
         Path temp = createTempChangelog();
         try (BufferedWriter bw = Files.newBufferedWriter(temp)) {
             ChangelogReader reader = new ChangelogReader() {
@@ -236,11 +245,10 @@ public class ReleaseMojo extends InitMojo {
             List<String> ends = new ArrayList<>(begins);
             begins.remove(0);
             ends.remove(ends.size() - 1);
-            List<Range<String>> ranges = Range.zip(begins, ends);
 
-            return ranges;
+            return Range.zip(begins, ends);
         } else {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
     }
 
@@ -248,9 +256,8 @@ public class ReleaseMojo extends InitMojo {
      * Returns the application version.
      *
      * @return the application version.
-     * @throws MojoFailureException if an error occurs.
      */
-    private String getAppVersion() throws MojoFailureException {
+    private String getAppVersion() {
         return project.getModel().getVersion();
     }
 

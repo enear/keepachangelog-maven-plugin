@@ -30,7 +30,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import co.enear.maven.plugins.keepachangelog.markdown.specific.ChangelogValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 
@@ -38,6 +41,8 @@ import static co.enear.maven.plugins.keepachangelog.git.TagUtils.toTag;
 
 @Mojo(name = "validate")
 public class ValidateMojo extends InitMojo {
+
+    private static final Logger logger = LoggerFactory.getLogger(ValidateMojo.class);
 
     private void handleTagsWithoutVersions(ChangelogValidator validator) {
         Set<String> tagsWithoutVersions = validator.getTagsWithoutVersions();
@@ -54,7 +59,12 @@ public class ValidateMojo extends InitMojo {
         }
     }
 
-    public void validate(Path path) {
+    private void validate(Path path) {
+        if (!Files.isRegularFile(path)) {
+            logger.warn("Changelog file not found. Skipping validation.");
+            return;
+        }
+
         ChangelogValidator validator = new ChangelogValidator(connectionUrl, username, password, tagFormat);
         validator.read(path);
         handleTagsWithoutVersions(validator);
