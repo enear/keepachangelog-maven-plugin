@@ -280,6 +280,8 @@ public class ReleaseMojo extends InitMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         super.execute();
         if (skip) return;
+        if (skipModules && !project.isExecutionRoot()) return;
+        if (skipRoot && project.isExecutionRoot()) return;
         writeNewChangelog();
     }
 }

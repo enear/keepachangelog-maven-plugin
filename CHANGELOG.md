@@ -7,11 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Skip root configuration.
+- Skip modules configuration.
+
 ## [1.3.0] - 2019-11-10
 
 ### Added
 
-- Skip support.
+- Skip configuration.
 
 ### Fixed
 

@@ -85,8 +85,74 @@ Additionally can use the following options:
  * `tagFormat`: the format of a tag compared to a version. This is used to create version comparison URLs. The
    `${version}` placeholder will be replaced by versions found in the Changelog. The default value is `v${version}`
    which is the most popular Git tag format.
- * `skip`: skips the execution of this plugin. May be useful in some cases. For example, if the only the parent pom
-   must release the changelog.
+ * `skip`: skips the execution of this plugin.
+ * `skipModules`: skips the execution of this plugin in the modules.
+ * `skipRoot`: skips the execution of this plugin in the root project.
+ 
+ 
+## Multi Module Projects
+
+If you have a multi-module project you may want to run this plugin as follows:
+
+- Run the plugin in the parent and modules
+- Run the plugin in the parent pom only
+- Run the plugin in the modules only.
+
+The following sections show how to get each configuration running.
+
+### Run on parent and modules
+
+Due to the way Maven works the plugin runs on the parent and modules by default. The following configuration on the
+parent pom should be enough:
+
+```xml
+<plugins>
+    <plugin>
+        <groupId>co.enear.maven.plugins</groupId>
+        <artifactId>keepachangelog-maven-plugin</artifactId>
+        <version>$(keepachangelog.version}</version>
+    </plugin>
+</plugins>
+```
+
+### Run on parent POM only
+
+Perhaps the most common option is to run on the parent pom only. The easiest way to achieve this is with the following
+configuration on the parent pom:
+
+```xml
+<plugins>
+    <plugin>
+        <groupId>co.enear.maven.plugins</groupId>
+        <artifactId>keepachangelog-maven-plugin</artifactId>
+        <version>$(keepachangelog.version}</version>
+        <configuration>
+            <skipModules>true</skipModules>
+        </configuration>
+    </plugin>
+</plugins>
+```
+
+This configuration still works even if your parent project declares another parent. 
+
+### Run on the modules only
+
+Lastly you may want to run on the modules only. There is an option to skip the root project:
+
+```xml
+<plugins>
+    <plugin>
+        <groupId>co.enear.maven.plugins</groupId>
+        <artifactId>keepachangelog-maven-plugin</artifactId>
+        <version>$(keepachangelog.version}</version>
+        <configuration>
+            <skipRoot>true</skipRoot>
+        </configuration>
+    </plugin>
+</plugins>
+```
+
+However, perhaps it's best to explicitly declare the dependency on each module.
 
 ## Password Encryption
 

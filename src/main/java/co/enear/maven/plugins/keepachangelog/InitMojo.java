@@ -72,6 +72,12 @@ public class InitMojo extends AbstractMojo {
     @Parameter(defaultValue = "false", readonly = true)
     protected boolean skip;
 
+    @Parameter(defaultValue = "false", readonly = true)
+    protected boolean skipModules;
+
+    @Parameter(defaultValue = "false", readonly = true)
+    protected boolean skipRoot;
+
     @Component(role = SettingsDecrypter.class)
     protected SettingsDecrypter settingsDecrypter;
 
