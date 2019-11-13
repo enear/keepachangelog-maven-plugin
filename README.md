@@ -27,8 +27,7 @@ mvn keepachangelog:release
 
 Releasing will perform the following operations:
 
- * Replace the `Unreleased` version with the current application version, found
-   in `pom.xml`.
+ * Replace the `Unreleased` version with the current application version, found in `pom.xml`.
  * Add a new `Unreleased` version.
  * Update the reference links for version comparisons.
 
@@ -78,15 +77,16 @@ Executing the `release` task would transform `CHANGELOG.md` into:
 
 Additionally can use the following options:
 
- * `connectionUrl`: the connection URL for the Git repository. By default the
-   connection URL is read from the `scm/connection` entry in `pom.xml`.
+ * `connectionUrl`: the connection URL for the Git repository. By default the connection URL is read from the
+   `scm/connection` entry in `pom.xml`.
  * `username`: the username to connect to the Git repository.
- * `password`: the password to connect to the Git repository. Encrypted passwords
-   on `settings.xml` are supported that is the recommended way.
- * `tagFormat`: the format of a tag compared to a version. This is used to
-   create version comparison URLs. The `${version}` placeholder will be
-   replaced by versions found in the Changelog. The default value is
-   `v${version}` which is the most popular Git tag format.
+ * `password`: the password to connect to the Git repository. Encrypted passwords on `settings.xml` are supported that
+    is the recommended way.
+ * `tagFormat`: the format of a tag compared to a version. This is used to create version comparison URLs. The
+   `${version}` placeholder will be replaced by versions found in the Changelog. The default value is `v${version}`
+   which is the most popular Git tag format.
+ * `skip`: skips the execution of this plugin. May be useful in some cases. For example, if the only the parent pom
+   must release the changelog.
 
 ## Password Encryption
 
@@ -165,5 +165,5 @@ These are the known issues and possible fixes:
 
  * Only Git repositories are supported.
  * Only GitHub and BitBucket are supported.
- * The Changelog syntax is not checked. Could be fixed by parsing the Markdown
-   and checking if it corresponds to a Changelog.
+ * The Changelog syntax is not checked. Could be fixed by parsing the Markdown and checking if it corresponds to a
+   Changelog.
