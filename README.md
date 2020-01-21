@@ -110,7 +110,7 @@ parent pom should be enough:
     <plugin>
         <groupId>co.enear.maven.plugins</groupId>
         <artifactId>keepachangelog-maven-plugin</artifactId>
-        <version>$(keepachangelog.version}</version>
+        <version>${keepachangelog.version}</version>
     </plugin>
 </plugins>
 ```
@@ -125,7 +125,7 @@ configuration on the parent pom:
     <plugin>
         <groupId>co.enear.maven.plugins</groupId>
         <artifactId>keepachangelog-maven-plugin</artifactId>
-        <version>$(keepachangelog.version}</version>
+        <version>${keepachangelog.version}</version>
         <configuration>
             <skipModules>true</skipModules>
         </configuration>
@@ -144,7 +144,7 @@ Lastly you may want to run on the modules only. There is an option to skip the r
     <plugin>
         <groupId>co.enear.maven.plugins</groupId>
         <artifactId>keepachangelog-maven-plugin</artifactId>
-        <version>$(keepachangelog.version}</version>
+        <version>${keepachangelog.version}</version>
         <configuration>
             <skipRoot>true</skipRoot>
         </configuration>
