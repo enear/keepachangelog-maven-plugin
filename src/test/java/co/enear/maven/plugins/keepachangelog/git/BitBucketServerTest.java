@@ -39,7 +39,7 @@ public class BitBucketServerTest {
     @Test
     public void diffTest() throws MalformedURLException {
 
-        URL url = new URL("https://bitbucket.com/scm/enear/keepachangelog-maven-plugin.git");
+        URL url = new URL("https://bitbucket.com/scm/enear/keepachangelog-maven-plugin");
 
         BitBucketServer bbs = new BitBucketServer(url);
 

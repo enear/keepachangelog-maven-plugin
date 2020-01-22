@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.0.0] - 2020-01-22
+
+### Added
+
+- Repository URL option, which references the repository web page.
+
+### Changed
+
+- Difference links are not derived from the SCM connection URL anymore but from the SCM URL instead. This is the correct
+  behavior since the web page URL does not have to match the connection URL at all.
+
+### Fixed
+
+- Exception when SCM connection URL was configured with GIT/SSH protocol.
+
 ## [1.4.0] - 2019-11-13
 
 ### Added
@@ -83,7 +98,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Task to release a given changelog
 
-[Unreleased]: https://github.com/enear/keepachangelog-maven-plugin/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/enear/keepachangelog-maven-plugin/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/enear/keepachangelog-maven-plugin/compare/v1.4.0...v2.0.0
 [1.4.0]: https://github.com/enear/keepachangelog-maven-plugin/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/enear/keepachangelog-maven-plugin/compare/v1.2.3...v1.3.0
 [1.2.3]: https://github.com/enear/keepachangelog-maven-plugin/compare/v1.2.2...v1.2.3

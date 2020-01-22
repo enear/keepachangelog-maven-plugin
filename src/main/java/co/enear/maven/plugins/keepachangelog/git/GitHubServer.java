@@ -36,7 +36,7 @@ public class GitHubServer extends BaseGitServer implements RepoServer {
     private static final String USER_ID = "username";
     private static final String REPO_ID = "repository";
     private static final String PATH_REGEX =
-            String.format("/(?<%s>[^/]*)/(?<%s>[^/]*)\\.git", USER_ID, REPO_ID);
+            String.format("/(?<%s>[^/]+)/(?<%s>[^/]+)(?:/.*)?", USER_ID, REPO_ID);
 
     public static final Pattern pathPattern = Pattern.compile(PATH_REGEX);
 

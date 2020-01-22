@@ -39,7 +39,7 @@ public class BitBucketServer extends BaseGitServer implements RepoServer {
     private static final String PROJECT_ID = "project";
     private static final String REPO_ID = "repository";
     private static final String PATH_REGEX =
-            String.format("/scm/(?<%s>[^/]+)/(?<%s>[^/]+)\\.git", PROJECT_ID, REPO_ID);
+            String.format("/scm/(?<%s>[^/]+)/(?<%s>[^/]+)(?:/.*)?", PROJECT_ID, REPO_ID);
 
     public static final Pattern pathPattern = Pattern.compile(PATH_REGEX);
 

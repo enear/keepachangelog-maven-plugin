@@ -30,7 +30,6 @@ import co.enear.maven.plugins.keepachangelog.markdown.generic.RefLink;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import co.enear.maven.plugins.keepachangelog.git.TagUtils;
 
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,12 +42,12 @@ public class ChangelogValidator extends ChangelogReader {
     private Set<String> versionsWithoutTags = Collections.emptySet();
     private Set<String> tagsWithoutVersions = Collections.emptySet();
 
-    private URL url;
+    private String url;
     private String username;
     private String password;
     private String tagFormat;
 
-    public ChangelogValidator(URL url, String username, String password, String tagFormat) {
+    public ChangelogValidator(String url, String username, String password, String tagFormat) {
         this.url = url;
         this.username = username;
         this.password = password;

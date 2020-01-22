@@ -39,7 +39,7 @@ public class GitHubServerTest {
     @Test
     public void diffTest() throws MalformedURLException {
 
-        URL url = new URL("https://github.com/enear/keepachangelog-maven-plugin.git");
+        URL url = new URL("https://github.com/enear/keepachangelog-maven-plugin");
 
         GitHubServer ghs = new GitHubServer(url);
 
@@ -47,12 +47,5 @@ public class GitHubServerTest {
         assertNotNull(actual);
         assertEquals(new URL("https://github.com/enear/keepachangelog-maven-plugin/compare/1.0.0...3.0.0"), actual);
     }
-
-
-    @Test(expected=GitServerException.class)
-    public void diffTestException() throws MalformedURLException {
-        URL url = new URL("https://github.com/scm/enear/keepachangelog-maven-plugin.git");
-
-        GitHubServer ghs = new GitHubServer(url);
-    }
+    
 }

@@ -34,7 +34,6 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
-import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -67,13 +66,13 @@ public class TagUtils {
      * @return a list of tags.
      * @throws GitAPIException if an error occurs while calling a Git command
      */
-    public static List<String> getTags(URL url, String username, String password)
+    public static List<String> getTags(String url, String username, String password)
             throws GitAPIException {
         if (url == null)
             return Collections.emptyList();
 
         LsRemoteCommand cmd = Git.lsRemoteRepository();
-        cmd.setRemote(url.toString());
+        cmd.setRemote(url);
         if (username != null && password != null) {
             cmd.setCredentialsProvider(
                     new UsernamePasswordCredentialsProvider(username, password)

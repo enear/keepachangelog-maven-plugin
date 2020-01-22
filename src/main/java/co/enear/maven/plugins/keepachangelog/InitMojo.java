@@ -52,7 +52,10 @@ public class InitMojo extends AbstractMojo {
     private static final String SERVER_ID_KEY = "project.scm.id";
 
     @Parameter(property = "connectionUrl")
-    protected URL connectionUrl;
+    protected String connectionUrl;
+
+    @Parameter(property = "repositoryUrl")
+    protected URL repositoryUrl;
 
     @Parameter(property = "username")
     protected String username;
@@ -106,15 +109,24 @@ public class InitMojo extends AbstractMojo {
 
     /**
      * Initializes the connection URL using Maven POM.
-     *
-     * @throws MojoFailureException if the SCM connection is malformed.
      */
-    private void initConnectionURLFromPom() throws MojoFailureException {
-        try {
-            MavenUtils.getScmConnectionUrl(project).ifPresent(c -> connectionUrl = c);
-        } catch (MalformedURLException e) {
-            throw new MojoFailureException("Failed to get connection URL.", e);
-        }
+    private void initConnectionURLFromPom() {
+        connectionUrl = MavenUtils.getScmConnectionUrl(project)
+                .map(c -> c.replaceFirst("scm:[^:]+:", ""))
+                .orElse(null);
+    }
+
+    /**
+     * Initializes the repository URL using Maven POM.
+     */
+    private void initRepositoryURLFromPom() {
+        repositoryUrl = MavenUtils.getScmUrl(project).map(c -> {
+            try {
+                return new URL(c);
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }).orElse(null);
     }
 
     /**
@@ -136,6 +148,10 @@ public class InitMojo extends AbstractMojo {
 
         if (connectionUrl == null) {
             initConnectionURLFromPom();
+        }
+
+        if (repositoryUrl == null) {
+            initRepositoryURLFromPom();
         }
     }
 }

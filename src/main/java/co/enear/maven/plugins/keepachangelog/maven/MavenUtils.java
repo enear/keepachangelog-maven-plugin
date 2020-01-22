@@ -35,8 +35,6 @@ import org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
 import org.apache.maven.settings.crypto.SettingsDecrypter;
 import org.apache.maven.settings.crypto.SettingsDecryptionResult;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Optional;
 
 /**
@@ -49,17 +47,29 @@ public class MavenUtils {
      *
      * @param model the Maven model to extract the SCM connection URL from.
      * @return the SCM connection URL.
-     * @throws MalformedURLException if the SCM connection URL is malformed.
      */
-    private static Optional<URL> getScmConnectionUrl(Model model) throws MalformedURLException {
-        Scm scm = model.getScm();
-        if (scm != null) {
-            String connection = scm.getConnection();
-            if (connection != null) {
-                return Optional.of(new URL(connection.replaceFirst("scm:[^:]+:", "")));
-            }
-        }
-        return Optional.empty();
+    private static Optional<String> getScmConnectionUrl(Model model) {
+        return getScm(model).map(Scm::getConnection);
+    }
+
+    /**
+     * Returns the SCM URL,
+     *
+     * @param model the Maven model to extract the SCM URL from.
+     * @return the SCM URL.
+     */
+    private static Optional<String> getScmUrl(Model model) {
+        return getScm(model).map(Scm::getUrl);
+    }
+
+    /**
+     * Return the SCM.
+     *
+     * @param model the Maven model to extract the SCM from.
+     * @return the SCM.
+     */
+    private static Optional<Scm> getScm(Model model) {
+        return Optional.ofNullable(model.getScm());
     }
 
     /**
@@ -67,11 +77,21 @@ public class MavenUtils {
      *
      * @param project the Maven project to extract the SCM connection URL from.
      * @return the SCM connection URL.
-     * @throws MalformedURLException if the SCM connection URL is malformed.
      */
-    public static Optional<URL> getScmConnectionUrl(MavenProject project) throws MalformedURLException {
+    public static Optional<String> getScmConnectionUrl(MavenProject project) {
         Model model = project.getModel();
         return getScmConnectionUrl(model);
+    }
+
+    /**
+     * Returns the SCM URL.
+     *
+     * @param project the Maven project to extract the SCM URL from.
+     * @return the SCM URL.
+     */
+    public static Optional<String> getScmUrl(MavenProject project) {
+        Model model = project.getModel();
+        return getScmUrl(model);
     }
 
     /**

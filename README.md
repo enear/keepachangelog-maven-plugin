@@ -41,7 +41,8 @@ For example, if this is your `pom.xml`:
   ...
   <!-- Required to generate the reference links -->
   <scm>
-      <connection>scm:git:https://github.com/me/myproject.git</connection>
+      <connection>scm:git:git://github.com/me/myproject.git</connection>
+      <url>https://github.com/me/myproject/tree/master</url>
   </scm>
 </project>
 ```
@@ -75,20 +76,20 @@ Executing the `release` task would transform `CHANGELOG.md` into:
 
 ## Options
 
-Additionally can use the following options:
+The following options are available:
 
- * `connectionUrl`: the connection URL for the Git repository. By default the connection URL is read from the
-   `scm/connection` entry in `pom.xml`.
+ * `repositoryUrl`: the repository web page URL. Used to generate diff links. By default read from `scm/url` entry in
+   `pom.xml`. Example:   
+ * `connectionUrl`: the repository connection URL. By default read from the `scm/connection` entry in `pom.xml`.
  * `username`: the username to connect to the Git repository.
- * `password`: the password to connect to the Git repository. Encrypted passwords on `settings.xml` are supported that
-    is the recommended way.
+ * `password`: the password to connect to the Git repository. Encrypted passwords on `settings.xml` are supported and
+   it is the recommended method for security reasons. See the Password Encryption section bellow for more information.
  * `tagFormat`: the format of a tag compared to a version. This is used to create version comparison URLs. The
    `${version}` placeholder will be replaced by versions found in the Changelog. The default value is `v${version}`
    which is the most popular Git tag format.
  * `skip`: skips the execution of this plugin.
  * `skipModules`: skips the execution of this plugin in the modules.
  * `skipRoot`: skips the execution of this plugin in the root project.
- 
  
 ## Multi Module Projects
 
@@ -231,5 +232,6 @@ These are the known issues and possible fixes:
 
  * Only Git repositories are supported.
  * Only GitHub and BitBucket are supported.
+ * Missing custom URLs for diff links
  * The Changelog syntax is not checked. Could be fixed by parsing the Markdown and checking if it corresponds to a
    Changelog.

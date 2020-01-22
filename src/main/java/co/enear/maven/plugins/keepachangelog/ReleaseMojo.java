@@ -272,7 +272,7 @@ public class ReleaseMojo extends InitMojo {
 
         Path path = getChangelogPath();
         String version = getAppVersion();
-        RepoServer origin = getOriginRepo(connectionUrl);
+        RepoServer origin = getOriginRepo(repositoryUrl);
         writeNewChangelog(version, origin, path);
     }
 
