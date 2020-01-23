@@ -1,8 +1,7 @@
 # Keep a changelog Maven plugin
 
-This Maven plugin to manage changelogs that adheres to [keep a
-changelog](http://keepachangelog.com/en/1.0.0/). The plugin tasks are described
-next.
+This Maven plugin to manage changelogs that adhere to [keep a_changelog](http://keepachangelog.com/en/1.0.0/).
+The plugin tasks are described next.
 
 ## Validate
 
@@ -78,9 +77,10 @@ Executing the `release` task would transform `CHANGELOG.md` into:
 
 The following options are available:
 
- * `repositoryUrl`: the repository web page URL. Used to generate diff links. By default read from `scm/url` entry in
-   `pom.xml`. Example:   
- * `connectionUrl`: the repository connection URL. By default read from the `scm/connection` entry in `pom.xml`.
+ * `repositoryUrl`: the repository web page URL. Used to generate diff links. By default read from the `scm/url` entry
+   in `pom.xml`.
+ * `connectionUrl`: the repository connection URL. Used to get repository information, such as tags. By default read
+   from the `scm/connection` entry in `pom.xml`.
  * `username`: the username to connect to the Git repository.
  * `password`: the password to connect to the Git repository. Encrypted passwords on `settings.xml` are supported and
    it is the recommended method for security reasons. See the Password Encryption section bellow for more information.
@@ -223,8 +223,7 @@ Finally add the following entry to the `~/.m2/settings.xml` file:
 </settings>
 ```
 
-More information on the [maven encryption
-guide](https://maven.apache.org/guides/mini/guide-encryption.html).
+More information on the [maven encryption_guide](https://maven.apache.org/guides/mini/guide-encryption.html).
 
 ## Known Issues
 
