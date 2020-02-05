@@ -29,6 +29,7 @@ package co.enear.maven.plugins.keepachangelog.utils;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A range.
@@ -95,12 +96,26 @@ public class Range<N> {
         for (N x : xs) {
             if (itXs.hasNext()) {
                 N y = itXs.next();
-                Range<N> range = new Range<N>(x, y);
+                Range<N> range = new Range<>(x, y);
                 list.add(range);
             } else {
                 break;
             }
         }
         return list;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Range<?> range = (Range<?>) o;
+        return Objects.equals(begin, range.begin) &&
+                Objects.equals(end, range.end);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(begin, end);
     }
 }

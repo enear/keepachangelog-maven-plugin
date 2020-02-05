@@ -28,7 +28,9 @@ package co.enear.maven.plugins.keepachangelog.utils;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
@@ -36,38 +38,45 @@ import org.junit.Test;
 
 public class RangeTest {
 
-    private Range range;
-
-    @Before
-    public void setup() {
-        range = new Range<String>("1", "12");
+    @Test
+    public void should_GetLeftArg_WhenGetBegin() {
+        assertEquals("1", new Range<>("1", "12").getBegin());
     }
 
     @Test
-    public void getBeginTest() {
-        assertEquals("1", range.getBegin());
+    public void should_GetRightArg_WhenGetEnd() {
+        assertEquals("12", new Range<>("1", "12").getEnd());
     }
 
     @Test
-    public void getEndTest() {
-        assertEquals("12", range.getEnd());
+    public void should_CreateSameIndexPairs_ZipSameSizeLists() {
+        List<Range<Integer>> actual = Range.zip(Arrays.asList(1, 2), Arrays.asList(3, 4));
+        List<Range<Integer>> expected = new ArrayList<>();
+        expected.add(new Range<>(1, 3));
+        expected.add(new Range<>(2, 4));
+        assertEquals(expected, actual);
     }
 
     @Test
-    public void zipTest() {
+    public void should_DropExtraElements_ZipDifferentSizeLists() {
+        List<Range<Integer>> actual;
+        List<Range<Integer>> expected;
 
-        List<Range<String>> actual = Range.zip(Arrays.asList("1", "2", "3"), Arrays.asList("4", "5", "6", "7", "8"));
+        actual = Range.zip(Arrays.asList(1, 2), Arrays.asList(4, 5, 6));
+        expected = new ArrayList<>();
+        expected.add(new Range<>(1, 4));
+        expected.add(new Range<>(2, 5));
+        assertEquals(expected, actual);
 
-        assertEquals(3, actual.size());
-        assertEquals("1", actual.get(0).getBegin());
-        assertEquals("4", actual.get(0).getEnd());
+        actual = Range.zip(Arrays.asList(1, 2, 3), Arrays.asList(4, 5));
+        expected = new ArrayList<>();
+        expected.add(new Range<>(1, 4));
+        expected.add(new Range<>(2, 5));
+        assertEquals(expected, actual);
 
-        assertEquals("2", actual.get(1).getBegin());
-        assertEquals("5", actual.get(1).getEnd());
-
-        assertEquals("3", actual.get(2).getBegin());
-        assertEquals("6", actual.get(2).getEnd());
-
+        actual = Range.zip(Arrays.asList(1, 2, 3), Collections.emptyList());
+        expected = new ArrayList<>();
+        assertEquals(expected, actual);
     }
 
 }

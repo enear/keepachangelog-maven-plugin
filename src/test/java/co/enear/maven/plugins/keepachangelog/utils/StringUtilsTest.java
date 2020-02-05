@@ -26,38 +26,52 @@ package co.enear.maven.plugins.keepachangelog.utils;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import org.junit.Test;
 
 import java.util.Optional;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class StringUtilsTest {
 
     @Test
-    public void repeatTest() {
-        assertEquals("cccc", StringUtils.repeat('c', 4));
-
+    public void should_GetStringOfNChar_WhenNRepetitions() {
+        String actual = StringUtils.repeat('c', 4);
+        assertEquals("cccc", actual);
     }
 
     @Test
-    public void replaceTest() {
-        assertEquals("I have 3 apples", StringUtils.replace("I have ${apples} apples", "apples", "3")); 
+    public void should_GetEmptyString_WhenZeroRepetitions() {
+        String actual = StringUtils.repeat('c', 0);
+        assertEquals("", actual);
+    }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void should_ThrowIllegalArgumentException_WhenNegativeRepetitions() {
+        StringUtils.repeat('c', -5);
     }
 
     @Test
-    public void extractTest() {
+    public void should_GetStringWithVariableValue_WhenReplaceVariableInString() {
+        String actual = StringUtils.replace("I have ${apples} apples", "apples", "3");
+        assertEquals("I have 3 apples", actual);
+    }
+
+    @Test
+    public void should_GetSameString_WhenReplaceVariableNotInString() {
+        String actual = StringUtils.replace("I have ${apples} apples", "oranges", "3");
+        assertEquals("I have ${apples} apples", actual);
+    }
+
+    @Test
+    public void should_GetExtractedValue_WhenExtractStringWithMatchedFormat() {
         Optional<String> actual = StringUtils.extract("v1.0.0", "version", "v${version}");
-
-        assertEquals("1.0.0", actual.get());
+        assertEquals(Optional.of("1.0.0"), actual);
     }
 
     @Test
-    public void extractEmptyTest() {
+    public void should_GetEmpty_WhenExtractStringWithUnmatchedFormat() {
         Optional<String> actual = StringUtils.extract("3234234", "version", "v${version}");
-
-        assertFalse(actual.isPresent());
+        assertEquals(Optional.empty(), actual);
     }
 }

@@ -37,7 +37,7 @@ import org.junit.Test;
 public class GitHubServerTest {
 
     @Test
-    public void diffTest() throws MalformedURLException {
+    public void should_GetDiffUrl_WhenDiffVersions() throws MalformedURLException {
 
         URL url = new URL("https://github.com/enear/keepachangelog-maven-plugin");
 

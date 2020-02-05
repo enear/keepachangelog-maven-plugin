@@ -30,8 +30,11 @@ import co.enear.maven.plugins.keepachangelog.utils.Range;
 
 import static org.junit.Assert.*;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.junit.Test;
 
 public class TagUtilsTest {
@@ -40,17 +43,23 @@ public class TagUtilsTest {
     public static final String HEAD = "HEAD";
 
     @Test
-    public void toTagTest() {
+    public void should_GetEmptyList_WhenUrlIsNull() throws GitAPIException {
+        List<String> tags = TagUtils.getTags(null, null, null);
+        assertEquals(Collections.emptyList(), tags);
+    }
+
+    @Test
+    public void should_GetTag_WhenGivenReleasedVersion() {
         assertEquals("v1.0.0", TagUtils.toTag("v${version}", "1.0.0"));
     }
 
     @Test
-    public void toTagUnreleasedTest() {
+    public void should_GetHead_WhenGivenUnreleasedVersion() {
         assertEquals(HEAD, TagUtils.toTag("", UNRELEASED_VERSION));
     }
 
     @Test
-    public void toTagRange() {
+    public void should_GetTagRange_WhenGivenReleasedVersionRange() {
         Range<String> range = new Range<String>("0.0.0", "3.0.0");
 
         Range<String> actual = TagUtils.toTagRange("v${version}", range);
@@ -61,13 +70,11 @@ public class TagUtilsTest {
     }
 
     @Test
-    public void toVersionTest() {
+    public void should_GetReleasedVersion_WhenGivenTag() {
         Optional<String> actual = TagUtils.toVersion("v${version}", "v1.0.0");
 
         assertTrue(actual.isPresent());
         assertEquals("1.0.0", actual.get());
     }
-
-
 
 }

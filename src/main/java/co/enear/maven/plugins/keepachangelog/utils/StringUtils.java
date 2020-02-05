@@ -47,13 +47,15 @@ public class StringUtils {
      * @return the given character {@code n} times.
      */
     public static String repeat(char c, int n) {
+        if (n < 0)
+            throw new IllegalArgumentException("The number of repetition cannot be negative");
         char[] cs = new char[n];
         Arrays.fill(cs, c);
         return new String(cs);
     }
 
     /**
-     * Replaces embed variable reference with a value.
+     * Replaces a variable in a string.
      * <p>
      * For example;
      * <pre>{@code
@@ -67,7 +69,7 @@ public class StringUtils {
      * }
      * </pre>
      *
-     * @param str   the string to have a variable replaced with a value.
+     * @param str   the string.
      * @param id    the id of the variable.
      * @param value the value.
      * @return the string with the value.
@@ -79,7 +81,7 @@ public class StringUtils {
 
     public static Optional<String> extract(String str, String id, String format) {
         String regex = replace(format, id, "(?<" + id + ">.*)");
-        Pattern pattern = Pattern.compile(regex);
+        Pattern pattern = Pattern.compile("^" + regex + "$");
         Matcher matcher = pattern.matcher(str);
         if (matcher.matches()) {
             return Optional.of(matcher.group(id));
@@ -88,8 +90,4 @@ public class StringUtils {
         }
     }
 
-    public static void main(String[] args) {
-        Optional<String> version = StringUtils.extract("v1.0.0", "version", "v${version}");
-        System.out.println(version);
-    }
 }

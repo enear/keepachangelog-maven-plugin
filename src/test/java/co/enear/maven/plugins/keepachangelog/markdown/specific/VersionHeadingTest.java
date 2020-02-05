@@ -46,7 +46,7 @@ public class VersionHeadingTest {
 
     private void assertUnreleased(VersionHeading version, boolean refLink) {
         assertEquals(InitMojo.UNRELEASED_VERSION, version.getVersion());
-        assertEquals(null, version.getDate());
+        assertNull(version.getDate());
         assertEquals(refLink, version.isRefLink());
         assertEquals("## " + expectedUnreleasedMarkdown(refLink), version.toMarkdown());
         assertTrue(version.isUnreleased());
@@ -55,60 +55,61 @@ public class VersionHeadingTest {
     }
 
     @Test
-    public void parseNoLink() {
-        Optional<VersionHeading> opt = VersionHeading.parse("## 1.0.0 - 2017-08-03");
-        assertTrue(opt.isPresent());
+    public void should_GetReleasedVersion_WhenParseValidVersionMarkdown() {
+        Optional<VersionHeading> opt;
+        VersionHeading version;
 
-        VersionHeading version = opt.get();
+        opt = VersionHeading.parse("## [1.5.0] - 2018-07-03");
+        assertTrue(opt.isPresent());
+        version = opt.get();
+        assertEquals("1.5.0", version.getVersion());
+        assertEquals(LocalDate.parse("2018-07-03"), version.getDate());
+        assertTrue(version.isRefLink());
+        assertEquals("## [1.5.0] - 2018-07-03", version.toMarkdown());
+        assertFalse(version.isUnreleased());
+        assertEquals("VersionHeading(1.5.0, 2018-07-03, true)", version.toString());
+
+        opt = VersionHeading.parse("## 1.0.0 - 2017-08-03");
+        assertTrue(opt.isPresent());
+        version = opt.get();
         assertEquals("1.0.0", version.getVersion());
         assertEquals(LocalDate.parse("2017-08-03"), version.getDate());
-        assertEquals(false, version.isRefLink());
+        assertFalse(version.isRefLink());
         assertEquals("## 1.0.0 - 2017-08-03", version.toMarkdown());
         assertFalse(version.isUnreleased());
         assertEquals("VersionHeading(1.0.0, 2017-08-03, false)", version.toString());
     }
 
     @Test
-    public void parseLink() throws Exception {
-        Optional<VersionHeading> opt = VersionHeading.parse("## [1.5.0] - 2018-07-03");
+    public void should_GetUnreleasedVersion_WhenParseValidUnreleasedMarkdown() {
+        Optional<VersionHeading> opt;
+        VersionHeading version;
+
+        opt = VersionHeading.parse("## [Unreleased]");
         assertTrue(opt.isPresent());
-
-        VersionHeading version = opt.get();
-        assertEquals("1.5.0", version.getVersion());
-        assertEquals(LocalDate.parse("2018-07-03"), version.getDate());
-        assertEquals(true, version.isRefLink());
-        assertEquals("## [1.5.0] - 2018-07-03", version.toMarkdown());
-        assertFalse(version.isUnreleased());
-        assertEquals("VersionHeading(1.5.0, 2018-07-03, true)", version.toString());
-    }
-
-    @Test
-    public void parseUnreleasedLink() {
-        Optional<VersionHeading> opt = VersionHeading.parse("## [Unreleased]");
-        assertTrue(opt.isPresent());
-
-        VersionHeading version = opt.get();
+        version = opt.get();
         assertUnreleased(version, true);
-    }
 
-    @Test
-    public void parseUnreleasedNoLink() {
-        Optional<VersionHeading> opt = VersionHeading.parse("## Unreleased");
+        opt = VersionHeading.parse("## Unreleased");
         assertTrue(opt.isPresent());
-
-        VersionHeading version = opt.get();
+        version = opt.get();
         assertUnreleased(version, false);
     }
 
     @Test
-    public void parseWrongHeading() {
+    public void should_GetNothing_WhenParseInvalidUnreleasedMarkdown() {
         Optional<VersionHeading> opt = VersionHeading.parse("### Unreleased");
         assertFalse(opt.isPresent());
     }
 
     @Test
-    public void testUnreleased() {
-        VersionHeading version = VersionHeading.unreleased(false);
+    public void should_GetUnreleasedVersion_WhenMakeUnreleased() {
+        VersionHeading version;
+
+        version = VersionHeading.unreleased(false);
         assertUnreleased(version, false);
+
+        version = VersionHeading.unreleased(true);
+        assertUnreleased(version, true);
     }
 }

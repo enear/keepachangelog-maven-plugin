@@ -37,7 +37,7 @@ import org.junit.Test;
 public class BitBucketServerTest {
 
     @Test
-    public void diffTest() throws MalformedURLException {
+    public void should_GetDiffUrl_WhenDiffVersions() throws MalformedURLException {
 
         URL url = new URL("https://bitbucket.com/scm/enear/keepachangelog-maven-plugin");
 
@@ -49,7 +49,7 @@ public class BitBucketServerTest {
     }
 
     @Test(expected=GitServerException.class)
-    public void diffTestException() throws MalformedURLException {
+    public void should_ThrowGitServerException_WhenBitBucketUrlUnknown() throws MalformedURLException {
         URL url = new URL("https://bitbucket.com/enear/keepachangelog-maven-plugin.git");
 
         BitBucketServer bbs = new BitBucketServer(url);

@@ -37,7 +37,7 @@ import org.junit.Test;
 public class GitServerFactoryTest {
 
     @Test
-    public void fromBitBucket() throws MalformedURLException {
+    public void should_GetBitBucket_WhenUrlIsBitBucket() throws MalformedURLException {
         URL url = new URL("https://bitbucket.com/scm/enear/keepachangelog-maven-plugin.git");
 
         RepoServer actual = GitServerFactory.from(url);
@@ -48,7 +48,7 @@ public class GitServerFactoryTest {
     }
 
     @Test
-    public void fromGitHub() throws MalformedURLException {
+    public void should_GetGitHub_WhenUrlIsGitHub() throws MalformedURLException {
         URL url = new URL("https://github.com/enear/keepachangelog-maven-plugin.git");
 
         RepoServer actual = GitServerFactory.from(url);
@@ -58,7 +58,7 @@ public class GitServerFactoryTest {
     }
 
     @Test
-    public void fromNull() throws MalformedURLException {
+    public void should_GetNull_WhenUrlIsUnknown() throws MalformedURLException {
         assertNull( GitServerFactory.from( new URL("https://google.com/") ) );
     }
 
