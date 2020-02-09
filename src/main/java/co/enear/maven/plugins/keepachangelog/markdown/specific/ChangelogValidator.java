@@ -48,8 +48,8 @@ import static co.enear.maven.plugins.keepachangelog.InitMojo.UNRELEASED_VERSION;
 public class ChangelogValidator extends ChangelogReader {
 
     private Set<String> parsedVersions = new HashSet<>();
-    private Set<String> versionsWithoutTags = Collections.emptySet();
-    private Set<String> tagsWithoutVersions = Collections.emptySet();
+    private Set<String> versionsExceptTags = Collections.emptySet();
+    private Set<String> tagsExceptVersions = Collections.emptySet();
 
     private String url;
     private String username;
@@ -126,8 +126,8 @@ public class ChangelogValidator extends ChangelogReader {
      * @param gitVersions the tags in the repository as versions
      */
     private void initTagsWithoutVersions(Set<String> gitVersions) {
-        tagsWithoutVersions = new HashSet<>(gitVersions);
-        tagsWithoutVersions.removeAll(parsedVersions);
+        tagsExceptVersions = new HashSet<>(gitVersions);
+        tagsExceptVersions.removeAll(parsedVersions);
     }
 
     /**
@@ -136,9 +136,9 @@ public class ChangelogValidator extends ChangelogReader {
      * @param gitVersions the tags in the repository as versions
      */
     private void initVersionsWithoutTags(Set<String> gitVersions) {
-        versionsWithoutTags = new HashSet<>(parsedVersions);
-        versionsWithoutTags.remove(UNRELEASED_VERSION);
-        versionsWithoutTags.removeAll(gitVersions);
+        versionsExceptTags = new HashSet<>(parsedVersions);
+        versionsExceptTags.remove(UNRELEASED_VERSION);
+        versionsExceptTags.removeAll(gitVersions);
     }
 
     /**
@@ -146,8 +146,8 @@ public class ChangelogValidator extends ChangelogReader {
      *
      * @return the versions in the changelog minus the tags in the repository
      */
-    public Set<String> getVersionsWithoutTags() {
-        return versionsWithoutTags;
+    public Set<String> getVersionsExceptTags() {
+        return versionsExceptTags;
     }
 
     /**
@@ -155,7 +155,7 @@ public class ChangelogValidator extends ChangelogReader {
      *
      * @return the tags in the repository minus the versions in the changelog
      */
-    public Set<String> getTagsWithoutVersions() {
-        return tagsWithoutVersions;
+    public Set<String> getTagsExceptVersions() {
+        return tagsExceptVersions;
     }
 }
