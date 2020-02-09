@@ -26,10 +26,10 @@ package co.enear.maven.plugins.keepachangelog;
  * #L%
  */
 
+import co.enear.maven.plugins.keepachangelog.markdown.specific.ChangelogValidator;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
-import co.enear.maven.plugins.keepachangelog.markdown.specific.ChangelogValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,21 +44,42 @@ public class ValidateMojo extends InitMojo {
 
     private static final Logger logger = LoggerFactory.getLogger(ValidateMojo.class);
 
-    private void handleTagsWithoutVersions(ChangelogValidator validator) {
+    /**
+     * Warns the user that some tags in the repository do not have a matching version in the changelog.
+     *
+     * @param validator the changelog validator
+     */
+    private void warnTagsWithoutVersions(ChangelogValidator validator) {
         Set<String> tagsWithoutVersions = validator.getTagsWithoutVersions();
+        if (!tagsWithoutVersions.isEmpty()) {
+            logger.warn("Some tags in the repository do not have a matching version in the changelog");
+        }
         for (String version : tagsWithoutVersions) {
             getLog().warn("Missing version: " + version);
         }
     }
 
-    private void handleVersionsWithoutTags(ChangelogValidator validator) {
+    /**
+     * Warns the user that some versions in the changelog do not have matching tags in the repository.
+     *
+     * @param validator the changelog validator
+     */
+    private void warnVersionsWithoutTags(ChangelogValidator validator) {
         Set<String> versionsWithoutTags = validator.getVersionsWithoutTags();
+        if (!versionsWithoutTags.isEmpty()) {
+            logger.warn("Some versions in the changelog to not have a matching tag in the repository");
+        }
         for (String version : versionsWithoutTags) {
             String tag = toTag(tagFormat, version);
             getLog().warn("Missing tag: " + tag);
         }
     }
 
+    /**
+     * Validates a changelog file.
+     *
+     * @param path the path of the changelog
+     */
     private void validate(Path path) {
         if (!Files.isRegularFile(path)) {
             logger.warn("Changelog file not found. Skipping validation.");
@@ -67,8 +88,8 @@ public class ValidateMojo extends InitMojo {
 
         ChangelogValidator validator = new ChangelogValidator(connectionUrl, username, password, tagFormat);
         validator.read(path);
-        handleTagsWithoutVersions(validator);
-        handleVersionsWithoutTags(validator);
+        warnTagsWithoutVersions(validator);
+        warnVersionsWithoutTags(validator);
     }
 
     @Override

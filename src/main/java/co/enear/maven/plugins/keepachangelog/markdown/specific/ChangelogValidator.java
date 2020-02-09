@@ -26,9 +26,9 @@ package co.enear.maven.plugins.keepachangelog.markdown.specific;
  * #L%
  */
 
+import co.enear.maven.plugins.keepachangelog.git.TagUtils;
 import co.enear.maven.plugins.keepachangelog.markdown.generic.RefLink;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import co.enear.maven.plugins.keepachangelog.git.TagUtils;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -36,6 +36,15 @@ import java.util.stream.Collectors;
 
 import static co.enear.maven.plugins.keepachangelog.InitMojo.UNRELEASED_VERSION;
 
+/**
+ * A changelog validator.
+ * <p>
+ * Given a repository and a changelog file the validator stores:
+ * <ul>
+ *     <li>The versions in the changelog that do not have a matching tag in repository</li>
+ *     <li>The tags in the repository that do not have a matching version in the changelog</li>
+ * </ul>
+ */
 public class ChangelogValidator extends ChangelogReader {
 
     private Set<String> parsedVersions = new HashSet<>();
@@ -80,31 +89,72 @@ public class ChangelogValidator extends ChangelogReader {
         }
     }
 
+    /**
+     * Returns the repository tags, in version format.
+     * <p>
+     * For example, let the Git repository has the following tags:
+     * <pre>
+     * {@code
+     * v2.0
+     * v1.5
+     * v1.2
+     * }
+     * </pre>
+     * If the tag format is {@code "v${version}"} the {@code 'v'} will be removed, resulting in the set:
+     * <pre>
+     * {@code
+     * Set("2.0", "1.5", "1.2")
+     * }
+     * </pre>
+     *
+     * @return the repository tags as versions.
+     * @throws GitAPIException if an error occurs getting the tags
+     */
     private Set<String> getTagsAsVersions() throws GitAPIException {
         List<String> tags = TagUtils.getTags(url, username, password);
         tags.remove(UNRELEASED_VERSION);
-        return tags.stream().map(tag ->
-                TagUtils.toVersion(tagFormat, tag)).
-                filter(Optional::isPresent).
-                map(Optional::get).
-                collect(Collectors.toSet());
+        return tags.stream()
+                .map(tag -> TagUtils.toVersion(tagFormat, tag))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toSet());
     }
 
+    /**
+     * Initializes the tags in the repository minus the versions in the changelog.
+     *
+     * @param gitVersions the tags in the repository as versions
+     */
     private void initTagsWithoutVersions(Set<String> gitVersions) {
         tagsWithoutVersions = new HashSet<>(gitVersions);
         tagsWithoutVersions.removeAll(parsedVersions);
     }
 
+    /**
+     * Initializes the versions in the changelog minus the tags in the repository.
+     *
+     * @param gitVersions the tags in the repository as versions
+     */
     private void initVersionsWithoutTags(Set<String> gitVersions) {
         versionsWithoutTags = new HashSet<>(parsedVersions);
         versionsWithoutTags.remove(UNRELEASED_VERSION);
         versionsWithoutTags.removeAll(gitVersions);
     }
 
+    /**
+     * Returns the versions in the changelog minus the tags in the repository.
+     *
+     * @return the versions in the changelog minus the tags in the repository
+     */
     public Set<String> getVersionsWithoutTags() {
         return versionsWithoutTags;
     }
 
+    /**
+     * Returns the tags in the repository minus the versions in the changelog.
+     *
+     * @return the tags in the repository minus the versions in the changelog
+     */
     public Set<String> getTagsWithoutVersions() {
         return tagsWithoutVersions;
     }
