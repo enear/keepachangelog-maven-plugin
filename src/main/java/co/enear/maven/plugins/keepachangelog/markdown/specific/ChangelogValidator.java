@@ -82,8 +82,8 @@ public class ChangelogValidator extends ChangelogReader {
         super.read(path);
         try {
             Set<String> gitVersions = getTagsAsVersions();
-            initVersionsWithoutTags(gitVersions);
-            initTagsWithoutVersions(gitVersions);
+            initVersionsExceptTags(gitVersions);
+            initTagsExceptVersions(gitVersions);
         } catch (GitAPIException e) {
             throw new ReaderException("Failed to get tags as versions.", e);
         }
@@ -125,7 +125,7 @@ public class ChangelogValidator extends ChangelogReader {
      *
      * @param gitVersions the tags in the repository as versions
      */
-    private void initTagsWithoutVersions(Set<String> gitVersions) {
+    private void initTagsExceptVersions(Set<String> gitVersions) {
         tagsExceptVersions = new HashSet<>(gitVersions);
         tagsExceptVersions.removeAll(parsedVersions);
     }
@@ -135,7 +135,7 @@ public class ChangelogValidator extends ChangelogReader {
      *
      * @param gitVersions the tags in the repository as versions
      */
-    private void initVersionsWithoutTags(Set<String> gitVersions) {
+    private void initVersionsExceptTags(Set<String> gitVersions) {
         versionsExceptTags = new HashSet<>(parsedVersions);
         versionsExceptTags.remove(UNRELEASED_VERSION);
         versionsExceptTags.removeAll(gitVersions);

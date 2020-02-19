@@ -49,7 +49,7 @@ public class ValidateMojo extends InitMojo {
      *
      * @param validator the changelog validator
      */
-    private void warnTagsWithoutVersions(ChangelogValidator validator) {
+    private void warnTagsExceptVersions(ChangelogValidator validator) {
         Set<String> tagsWithoutVersions = validator.getTagsExceptVersions();
         if (!tagsWithoutVersions.isEmpty()) {
             logger.warn("Some tags in the repository do not have a matching version in the changelog");
@@ -64,7 +64,7 @@ public class ValidateMojo extends InitMojo {
      *
      * @param validator the changelog validator
      */
-    private void warnVersionsWithoutTags(ChangelogValidator validator) {
+    private void warnVersionsExceptTags(ChangelogValidator validator) {
         Set<String> versionsWithoutTags = validator.getVersionsExceptTags();
         if (!versionsWithoutTags.isEmpty()) {
             logger.warn("Some versions in the changelog to not have a matching tag in the repository");
@@ -88,8 +88,8 @@ public class ValidateMojo extends InitMojo {
 
         ChangelogValidator validator = new ChangelogValidator(connectionUrl, username, password, tagFormat);
         validator.read(path);
-        warnTagsWithoutVersions(validator);
-        warnVersionsWithoutTags(validator);
+        warnTagsExceptVersions(validator);
+        warnVersionsExceptTags(validator);
     }
 
     @Override
