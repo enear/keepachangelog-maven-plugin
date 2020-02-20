@@ -81,6 +81,9 @@ The following options are available:
    in `pom.xml`.
  * `connectionUrl`: the repository connection URL. Used to get repository information, such as tags. By default read
    from the `scm/connection` entry in `pom.xml`.
+ * `rangeUrl`: a custom range URL. If defined it will be used to generate diff links. Requires a `${start}` and `${end}`
+   variables, matching the reference range. Overrides the `repositoryUrl` when creating diff links. Example:
+   `https://gitrepos.com/prj/compare/${start}..${end}`. 
  * `username`: the username to connect to the Git repository.
  * `password`: the password to connect to the Git repository. Encrypted passwords on `settings.xml` are supported and
    it is the recommended method for security reasons. See the Password Encryption section bellow for more information.

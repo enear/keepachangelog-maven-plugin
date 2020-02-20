@@ -26,22 +26,42 @@ package co.enear.maven.plugins.keepachangelog.git;
  * #L%
  */
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.URL;
 
 /**
  * A factory for constructing Git Server representations.
  */
 public class GitServerFactory {
+    
+    public static final Logger logger = LoggerFactory.getLogger(GitServerFactory.class);
 
     private static final String BITBUCKET_HOST_PREFIX = "bitbucket";
     private static final String GITHUB_HOST_PREFIX = "github";
 
     /**
+     * Returns a Git server based on a given range URL.
+     *
+     * @param rangeUrl the range URL
+     * @return a repository server
+     */
+    public static RepoServer from(String rangeUrl) {
+        if (rangeUrl == null) {
+            return null;
+        } else {
+            logger.info("Using range URL {}", rangeUrl);
+            return new CustomGitServer(rangeUrl);
+        }
+    }
+
+    /**
      * Returns a Git Server based on a given repository URL.
      *
-     * @param originUrl a repository URL.
-     * @return a Repository Server.
-     * @throws GitServerException if the repository URL is malformed.
+     * @param originUrl a repository URL
+     * @return a repository server
+     * @throws GitServerException if the repository URL is malformed
      */
     public static RepoServer from(URL originUrl) {
         if (originUrl == null) {

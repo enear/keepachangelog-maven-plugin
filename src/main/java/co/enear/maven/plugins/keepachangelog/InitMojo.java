@@ -56,6 +56,9 @@ public class InitMojo extends AbstractMojo {
 
     @Parameter(property = "repositoryUrl")
     protected URL repositoryUrl;
+    
+    @Parameter(property = "rangeUrl")
+    protected String rangeUrl;
 
     @Parameter(property = "username")
     protected String username;

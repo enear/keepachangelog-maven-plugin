@@ -208,6 +208,16 @@ public class ReleaseMojo extends InitMojo {
     }
 
     /**
+     * Return a repository server.
+     * 
+     * @param rangeUrl a range URL
+     * @return the repository server
+     */
+    private RepoServer getRepoServer(String rangeUrl) {
+        return GitServerFactory.from(rangeUrl);
+    }
+
+    /**
      * Returns the origin repository.
      *
      * @param url the origin URL
@@ -272,7 +282,9 @@ public class ReleaseMojo extends InitMojo {
 
         Path path = getChangelogPath();
         String version = getAppVersion();
-        RepoServer origin = getOriginRepo(repositoryUrl);
+        RepoServer origin = rangeUrl != null && !rangeUrl.isEmpty() ?
+                getRepoServer(rangeUrl) :
+                getOriginRepo(repositoryUrl);
         writeNewChangelog(version, origin, path);
     }
 

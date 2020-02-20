@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Range URL option. Allows to define a custom repository server to generate diff links.
+
 ## [2.0.0] - 2020-01-22
 
 ### Added
