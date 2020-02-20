@@ -75,6 +75,8 @@ Executing the `release` task would transform `CHANGELOG.md` into:
 
 ## Release with Maven Release Plugin
 
+Note: Unfortunately it's not working yet. The changelog release is being committed.
+
 Most users probably want to run this plugin with the [Maven Release Plugin][maven-release-plugin]. The changelog must be
 released at the end of the preparation goals.
 
