@@ -73,6 +73,87 @@ Executing the `release` task would transform `CHANGELOG.md` into:
 [1.0]: https://github.com/me/myproject/compare/v0.5..v1.0
 ```
 
+## Release with Maven Release Plugin
+
+Most users probably want to run this plugin with the [Maven Release Plugin][maven-release-plugin]. The changelog must be
+released at the end of the preparation goals.
+
+```xml
+<plugins>
+    <plugin>
+        <groupId>co.enear.maven.plugins</groupId>
+        <artifactId>keepachangelog-maven-plugin</artifactId>
+        <version>${keepachangelog.version}</version>
+    </plugin>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${maven.release.plugin}</version>
+        <configuration>
+            <preparationGoals>clean verify keepachangelog:release</preparationGoals>
+        </configuration>
+    </plugin>
+</plugins>
+```
+
+This configuration can be tested in your local repository with the following command:
+
+```sh
+$ mvn release:clean release:prepare -DpushChanges=false
+```
+
+If everything ran as expected you should have two commits, one for the release and another for the next development
+iteration. If not, you can always rollback and try again:
+
+```sh
+# There's a rollback goal but it doesn't work very well
+$ mvn release:rollback
+
+# Deletes two commits
+# Note that prepare goal may perform 0 to 2 commits
+$ mvn reset --hard HEAD~2
+
+# Deletes the release tag
+# Note that prepare goal may not have created a tag at all
+$ git tag -d ${releaseVersion}
+```
+
+When you're happy finish your release:
+
+```sh
+# If you did not push your changes before, push manually
+$ git push
+$ git push --tags
+
+# Finish your release
+$ mvn release:perform
+```
+
+Or you might as well run everything in one go if you're feeling lucky:
+
+```sh
+$ mvn release:clean release:prepare release:perform
+```
+
+This plugin is configured to run itself before releasing a new version:
+
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-release-plugin</artifactId>
+    <version>${maven.release.plugin}</version>
+    <configuration>
+        <preparationGoals>clean verify co.enear.maven.plugins:keepachangelog-maven-plugin:release</preparationGoals>
+        <tagNameFormat>v@{project.version}</tagNameFormat>
+        <scmReleaseCommitComment>Update release @{releaseLabel}</scmReleaseCommitComment>
+        <scmDevelopmentCommitComment>Update for next development iteration</scmDevelopmentCommitComment>
+    </configuration>
+</plugin>
+```
+
+In this project the configuration is more elaborate so that the tags follow the standard format and the source control
+history is shorter. A longer reference to itself is also required.
+
 ## Options
 
 The following options are available:
@@ -237,3 +318,5 @@ These are the known issues and possible fixes:
  * Missing custom URLs for diff links
  * The Changelog syntax is not checked. Could be fixed by parsing the Markdown and checking if it corresponds to a
    Changelog.
+
+[maven-release-plugin]:http://maven.apache.org/maven-release/maven-release-plugin/
