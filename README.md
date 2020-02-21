@@ -75,10 +75,8 @@ Executing the `release` task would transform `CHANGELOG.md` into:
 
 ## Release with Maven Release Plugin
 
-Note: Unfortunately it's not working yet. The changelog release is being committed.
-
 Most users probably want to run this plugin with the [Maven Release Plugin][maven-release-plugin]. The changelog must be
-released at the end of the preparation goals.
+updated before the release commit. 
 
 ```xml
 <plugins>
@@ -92,7 +90,7 @@ released at the end of the preparation goals.
         <artifactId>maven-release-plugin</artifactId>
         <version>${maven.release.plugin}</version>
         <configuration>
-            <preparationGoals>clean verify keepachangelog:release</preparationGoals>
+            <preparationGoals>clean verify keepachangelog:release scm:add -Dincludes=CHANGELOG.md</preparationGoals>
         </configuration>
     </plugin>
 </plugins>
@@ -104,8 +102,8 @@ This configuration can be tested in your local repository with the following com
 $ mvn release:clean release:prepare -DpushChanges=false
 ```
 
-If everything ran as expected you should have two commits, one for the release and another for the next development
-iteration. If not, you can always rollback and try again:
+If everything ran as expected you should have two commits, one for the release (which includes the changelog update) and
+another for the next development iteration. If not, you can always rollback and try again:
 
 ```sh
 # There's a rollback goal but it doesn't work very well
@@ -145,7 +143,7 @@ This plugin is configured to run itself before releasing a new version:
     <artifactId>maven-release-plugin</artifactId>
     <version>${maven.release.plugin}</version>
     <configuration>
-        <preparationGoals>clean verify co.enear.maven.plugins:keepachangelog-maven-plugin:release</preparationGoals>
+        <preparationGoals>clean verify co.enear.maven.plugins:keepachangelog-maven-plugin:release scm:add -Dincludes=CHANGELOG.md</preparationGoals>
         <tagNameFormat>v@{project.version}</tagNameFormat>
         <scmReleaseCommitComment>Update release @{releaseLabel}</scmReleaseCommitComment>
         <scmDevelopmentCommitComment>Update for next development iteration</scmDevelopmentCommitComment>
@@ -316,8 +314,6 @@ More information on the [maven encryption_guide](https://maven.apache.org/guides
 These are the known issues and possible fixes:
 
  * Only Git repositories are supported.
- * Only GitHub and BitBucket are supported.
- * Missing custom URLs for diff links
  * The Changelog syntax is not checked. Could be fixed by parsing the Markdown and checking if it corresponds to a
    Changelog.
 

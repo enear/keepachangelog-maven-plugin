@@ -205,7 +205,7 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>${maven.release.plugin}</version>
                 <configuration>
-                    <preparationGoals>clean verify co.enear.maven.plugins:keepachangelog-maven-plugin:release</preparationGoals>
+                    <preparationGoals>clean verify co.enear.maven.plugins:keepachangelog-maven-plugin:release scm:add -Dincludes=CHANGELOG.md</preparationGoals>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                     <scmReleaseCommitComment>Update release @{releaseLabel}</scmReleaseCommitComment>
                     <scmDevelopmentCommitComment>Update for next development iteration</scmDevelopmentCommitComment>
@@ -218,8 +218,8 @@
         <connection>scm:git:git@github.com:enear/keepachangelog-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:enear/keepachangelog-maven-plugin.git</developerConnection>
         <url>https://github.com/enear/keepachangelog-maven-plugin/tree/master</url>
-      <tag>v2.1.0</tag>
-  </scm>
+        <tag>v2.1.0</tag>
+    </scm>
 
     <distributionManagement>
         <snapshotRepository>

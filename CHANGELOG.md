@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fix
+
+- Release configuration and documentation. It was not including the changelog update in the release commit.
+
 ## [2.1.0] - 2020-02-20
 
 ### Added
 
+- Release with Maven Release Plugin configuration and documentation. 
 - Range URL option. Allows to define a custom repository server to generate diff links.
 
 ## [2.0.0] - 2020-01-22
