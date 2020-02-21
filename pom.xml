@@ -26,7 +26,7 @@
 
     <groupId>co.enear.maven.plugins</groupId>
     <artifactId>keepachangelog-maven-plugin</artifactId>
-    <version>2.1.1-SNAPSHOT</version>
+    <version>2.1.1</version>
     <packaging>maven-plugin</packaging>
     <name>Keep a changelog Maven plugin</name>
     <description>A Maven plugin to manage changelogs that adhere to keep a changelog</description>
@@ -218,7 +218,7 @@
         <connection>scm:git:git@github.com:enear/keepachangelog-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:enear/keepachangelog-maven-plugin.git</developerConnection>
         <url>https://github.com/enear/keepachangelog-maven-plugin/tree/master</url>
-        <tag>v2.1.0</tag>
+        <tag>v2.1.1</tag>
     </scm>
 
     <distributionManagement>

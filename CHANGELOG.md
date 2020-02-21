@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.1.1] - 2020-02-21
+
 ### Fix
 
 - Release configuration and documentation. It was not including the changelog update in the release commit.
@@ -109,7 +111,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Task to release a given changelog
 
-[Unreleased]: https://github.com/enear/keepachangelog-maven-plugin/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/enear/keepachangelog-maven-plugin/compare/v2.1.1...HEAD
+[2.1.1]: https://github.com/enear/keepachangelog-maven-plugin/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/enear/keepachangelog-maven-plugin/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/enear/keepachangelog-maven-plugin/compare/v1.4.0...v2.0.0
 [1.4.0]: https://github.com/enear/keepachangelog-maven-plugin/compare/v1.3.0...v1.4.0
