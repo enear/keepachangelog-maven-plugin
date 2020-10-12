@@ -19,7 +19,7 @@
         <maven.model.version>3.5.0</maven.model.version>
         <jgit.version>4.8.0.201706111038-r</jgit.version>
         <project.scm.id>my-scm-server</project.scm.id>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <license.maven.plugin>1.15</license.maven.plugin>
         <mockito.version>1.10.19</mockito.version>
     </properties>
