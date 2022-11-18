@@ -100,7 +100,7 @@ public class ReleaseMojo extends InitMojo {
      * @throws IOException if an error occurs while writing.
      */
     private void writeDiffLink(RepoServer repoServer, Range<String> tagRange, BufferedWriter bw) throws IOException {
-        DiffRefLink diffRefLink = new DiffRefLink(tagFormat, repoServer, tagRange);
+        DiffRefLink diffRefLink = new DiffRefLink(tagFormat, unreleasedGitRef, repoServer, tagRange);
         bw.write(diffRefLink.toMarkdown());
         bw.newLine();
     }
@@ -213,8 +213,8 @@ public class ReleaseMojo extends InitMojo {
      * @param rangeUrl a range URL
      * @return the repository server
      */
-    private RepoServer getRepoServer(String rangeUrl) {
-        return GitServerFactory.from(rangeUrl);
+    private RepoServer getRepoServer(String rangeUrl, String rangeUrlUnreleased) {
+        return GitServerFactory.from(rangeUrl, rangeUrlUnreleased);
     }
 
     /**
@@ -283,7 +283,7 @@ public class ReleaseMojo extends InitMojo {
         Path path = getChangelogPath();
         String version = getAppVersion();
         RepoServer origin = rangeUrl != null && !rangeUrl.isEmpty() ?
-                getRepoServer(rangeUrl) :
+                getRepoServer(rangeUrl, rangeUrlUnreleased) :
                 getOriginRepo(repositoryUrl);
         writeNewChangelog(version, origin, path);
     }

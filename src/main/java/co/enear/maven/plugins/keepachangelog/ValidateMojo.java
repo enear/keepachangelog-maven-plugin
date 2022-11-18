@@ -70,7 +70,7 @@ public class ValidateMojo extends InitMojo {
             logger.warn("Some versions in the changelog to not have a matching tag in the repository");
         }
         for (String version : versionsWithoutTags) {
-            String tag = toTag(tagFormat, version);
+            String tag = toTag(tagFormat, version, unreleasedGitRef);
             getLog().warn("Missing tag: " + tag);
         }
     }

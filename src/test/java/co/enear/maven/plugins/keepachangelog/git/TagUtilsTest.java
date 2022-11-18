@@ -50,19 +50,19 @@ public class TagUtilsTest {
 
     @Test
     public void should_GetTag_WhenGivenReleasedVersion() {
-        assertEquals("v1.0.0", TagUtils.toTag("v${version}", "1.0.0"));
+        assertEquals("v1.0.0", TagUtils.toTag("v${version}", "1.0.0", HEAD));
     }
 
     @Test
     public void should_GetHead_WhenGivenUnreleasedVersion() {
-        assertEquals(HEAD, TagUtils.toTag("", UNRELEASED_VERSION));
+        assertEquals(HEAD, TagUtils.toTag("", UNRELEASED_VERSION, HEAD));
     }
 
     @Test
     public void should_GetTagRange_WhenGivenReleasedVersionRange() {
         Range<String> range = new Range<String>("0.0.0", "3.0.0");
 
-        Range<String> actual = TagUtils.toTagRange("v${version}", range);
+        Range<String> actual = TagUtils.toTagRange("v${version}", range, HEAD);
 
         assertEquals("v0.0.0", actual.getBegin());
         assertEquals("v3.0.0", actual.getEnd());
