@@ -40,6 +40,7 @@ import java.net.URL;
 public class DiffRefLink implements Markdown {
 
     private String tagFormat;
+    private String unreleasedGitRef;
     private RepoServer repoServer;
     private Range<String> versionRange;
 
@@ -50,8 +51,9 @@ public class DiffRefLink implements Markdown {
      * @param repoServer   the repository server.
      * @param versionRange the version range.
      */
-    public DiffRefLink(String tagFormat, RepoServer repoServer, Range<String> versionRange) {
+    public DiffRefLink(String tagFormat, String unreleasedGitRef, RepoServer repoServer, Range<String> versionRange) {
         this.tagFormat = tagFormat;
+        this.unreleasedGitRef = unreleasedGitRef;
         this.repoServer = repoServer;
         this.versionRange = versionRange;
     }
@@ -64,7 +66,7 @@ public class DiffRefLink implements Markdown {
     @Override
     public String toMarkdown() {
         String end = versionRange.getEnd();
-        Range<String> tagRange = TagUtils.toTagRange(tagFormat, versionRange);
+        Range<String> tagRange = TagUtils.toTagRange(tagFormat, versionRange, unreleasedGitRef);
         URL diff = repoServer.diff(tagRange);
         RefLink refLink = new RefLink(end, diff);
         return refLink.toMarkdown();

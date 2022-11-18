@@ -100,7 +100,7 @@ public class ReleaseMojo extends InitMojo {
      * @throws IOException if an error occurs while writing.
      */
     private void writeDiffLink(RepoServer repoServer, Range<String> tagRange, BufferedWriter bw) throws IOException {
-        DiffRefLink diffRefLink = new DiffRefLink(tagFormat, repoServer, tagRange);
+        DiffRefLink diffRefLink = new DiffRefLink(tagFormat, unreleasedGitRef, repoServer, tagRange);
         bw.write(diffRefLink.toMarkdown());
         bw.newLine();
     }

@@ -72,6 +72,9 @@ public class InitMojo extends AbstractMojo {
     @Parameter(defaultValue = "${settings}", readonly = true)
     protected Settings settings;
 
+    @Parameter(defaultValue = TagUtils.DEFAULT_UNRELEASED_GITREF, readonly = true)
+    protected String unreleasedGitRef;
+
     @Parameter(defaultValue = TagUtils.DEFAULT_TAG_FORMAT, readonly = true)
     protected String tagFormat;
 

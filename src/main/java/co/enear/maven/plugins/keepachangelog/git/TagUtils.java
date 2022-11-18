@@ -50,7 +50,7 @@ public class TagUtils {
     private static final String VERSION_ID = "version";
     public static final String DEFAULT_TAG_FORMAT = "v${" + VERSION_ID + "}";
 
-    private static final String HEAD = "HEAD";
+    public static final String DEFAULT_UNRELEASED_GITREF = "HEAD";
     private static final String REFS_TAGS = "refs/tags/";
 
     private static String getTagName(Ref tagRef) {
@@ -92,9 +92,9 @@ public class TagUtils {
      * @param version   the version to be converted.
      * @return a tag.
      */
-    public static String toTag(String tagFormat, String version) {
+    public static String toTag(String tagFormat, String version, String unreleasedGitRef) {
         if (version.equals(UNRELEASED_VERSION)) {
-            return HEAD;
+            return unreleasedGitRef;
         } else {
             return StringUtils.replace(tagFormat, VERSION_ID, version);
         }
@@ -107,9 +107,9 @@ public class TagUtils {
      * @param versionRange the version range.
      * @return a tag range.
      */
-    public static Range<String> toTagRange(String tagFormat, Range<String> versionRange) {
-        String b = toTag(tagFormat, versionRange.getBegin());
-        String e = toTag(tagFormat, versionRange.getEnd());
+    public static Range<String> toTagRange(String tagFormat, Range<String> versionRange, String unreleasedGitRef) {
+        String b = toTag(tagFormat, versionRange.getBegin(), unreleasedGitRef);
+        String e = toTag(tagFormat, versionRange.getEnd(), unreleasedGitRef);
         return new Range<>(b, e);
     }
 
