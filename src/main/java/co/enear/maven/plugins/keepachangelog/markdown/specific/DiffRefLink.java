@@ -34,6 +34,8 @@ import co.enear.maven.plugins.keepachangelog.git.TagUtils;
 
 import java.net.URL;
 
+import static co.enear.maven.plugins.keepachangelog.InitMojo.UNRELEASED_VERSION;
+
 /**
  * A changelog version comparison.
  */
@@ -67,7 +69,12 @@ public class DiffRefLink implements Markdown {
     public String toMarkdown() {
         String end = versionRange.getEnd();
         Range<String> tagRange = TagUtils.toTagRange(tagFormat, versionRange, unreleasedGitRef);
-        URL diff = repoServer.diff(tagRange);
+        URL diff;
+        if (versionRange.contains(UNRELEASED_VERSION)) {
+            diff = repoServer.diffUnreleased(tagRange);
+        } else {
+            diff = repoServer.diff(tagRange);
+        }
         RefLink refLink = new RefLink(end, diff);
         return refLink.toMarkdown();
     }

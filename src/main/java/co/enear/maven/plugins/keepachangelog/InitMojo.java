@@ -56,9 +56,22 @@ public class InitMojo extends AbstractMojo {
 
     @Parameter(property = "repositoryUrl")
     protected URL repositoryUrl;
-    
+
+    /**
+     * A custom range URL. If defined it will be used to generate diff links.
+     * Requires a ${start} and ${end} variables, matching the reference range.
+     * Overrides the repositoryUrl when creating diff links.
+     * <p>
+     * Example: {@code}https://gitrepos.com/prj/compare/${start}..${end}{@code}
+     */
     @Parameter(property = "rangeUrl")
     protected String rangeUrl;
+
+    /**
+     * A custom range URL for the Unreleased link. Only used if {@link InitMojo#rangeUrl} is also supplied.
+     */
+    @Parameter(property = "rangeUrlUnreleased")
+    protected String rangeUrlUnreleased;
 
     @Parameter(property = "username")
     protected String username;
@@ -72,6 +85,11 @@ public class InitMojo extends AbstractMojo {
     @Parameter(defaultValue = "${settings}", readonly = true)
     protected Settings settings;
 
+    /**
+     * By default, the Unreleased link compares the latest released version with HEAD.
+     * This optional parameter allows to compare to something else instead of HEAD.
+     * That can be useful e.g. if you use the git-flow branching concept and thus want to compare the latest version with the develop branch.
+     */
     @Parameter(defaultValue = TagUtils.DEFAULT_UNRELEASED_GITREF, readonly = true)
     protected String unreleasedGitRef;
 

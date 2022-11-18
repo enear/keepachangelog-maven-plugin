@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Unreleased GitRef option. Allows the Unreleased link to compare to something else than HEAD. 
+- Optional different Range URL for `Unreleased` link
 
 ## [2.1.1] - 2020-02-21
 

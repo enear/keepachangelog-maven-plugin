@@ -53,4 +53,23 @@ public interface RepoServer {
      * @throws GitServerException if the URL construction fails.
      */
     URL diff(Range<String> range);
+
+    /**
+     * Returns an URL that compares two commits, one of them being the Unreleased version.
+     *
+     * @param a the first commit.
+     * @param b the second commit.
+     * @return an URL that compares two commits.
+     * @throws GitServerException if the URL construction fails.
+     */
+    URL diffUnreleased(String a, String b);
+
+    /**
+     * Returns an URL that compares a range of commits, one of them being the Unreleased version.
+     *
+     * @param range the range of commits.
+     * @return an URL that compares a range of commits.
+     * @throws GitServerException if the URL construction fails.
+     */
+    URL diffUnreleased(Range<String> range);
 }

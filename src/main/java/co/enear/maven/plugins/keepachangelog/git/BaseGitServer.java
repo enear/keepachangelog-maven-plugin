@@ -38,4 +38,16 @@ public abstract class BaseGitServer implements RepoServer {
         String end = range.getEnd();
         return diff(begin, end);
     }
+
+    @Override
+    public URL diffUnreleased(Range<String> range) {
+        String begin = range.getBegin();
+        String end = range.getEnd();
+        return diffUnreleased(begin, end);
+    }
+
+    @Override
+    public URL diffUnreleased(String a, String b) {
+        return diff(a, b);
+    }
 }
